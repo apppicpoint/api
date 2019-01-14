@@ -17,9 +17,14 @@ class CreatePublicationsTable extends Migration
             $table->increments('id');
             $table->text('description');
             $table->string('media');
-            $table->integer('user_id');
-            $table->integer('spot_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('spot_id')->unsigned()->nullable(true);
             $table->timestamps();
+        });
+
+        Schema::table('publications', function (Blueprint $table) {
+            $table->foreign('spot_id')->references('id')->on('spots');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

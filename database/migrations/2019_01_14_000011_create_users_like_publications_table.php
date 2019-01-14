@@ -14,9 +14,15 @@ class CreateUsersLikePublicationsTable extends Migration
     public function up()
     {
         Schema::create('users_like_publications', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('spot_id');
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('publication_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('users_like_publications', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('publication_id')->references('id')->on('publications');
         });
     }
 

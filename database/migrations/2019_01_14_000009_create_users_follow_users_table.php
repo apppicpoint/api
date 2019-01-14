@@ -14,9 +14,15 @@ class CreateUsersFollowUsersTable extends Migration
     public function up()
     {
         Schema::create('users_follow_users', function (Blueprint $table) {
-            $table->integer('follower_user_id');
-            $table->integer('followed_user_id');
+            $table->increments('id');
+            $table->integer('follower_user_id')->unsigned();
+            $table->integer('followed_user_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('users_follow_users', function (Blueprint $table) {
+            $table->foreign('follower_user_id')->references('id')->on('users');
+            $table->foreign('followed_user_id')->references('id')->on('users');
         });
     }
 

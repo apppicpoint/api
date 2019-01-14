@@ -14,9 +14,15 @@ class CreatePublicationsTagsTable extends Migration
     public function up()
     {
         Schema::create('publications_tags', function (Blueprint $table) {
-            $table->integer('publication_id');
-            $table->integer('tag_id');
+            $table->increments('id');
+            $table->integer('publication_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('publications_tags', function (Blueprint $table) {
+            $table->foreign('publication_id')->references('id')->on('publications');
+            $table->foreign('tag_id')->references('id')->on('tags');
         });
     }
 

@@ -14,9 +14,15 @@ class CreateSpotsTagsTable extends Migration
     public function up()
     {
         Schema::create('spots_tags', function (Blueprint $table) {
-            $table->integer('spot_id');
-            $table->integer('tag_id');
+            $table->increments('id');
+            $table->integer('spot_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('spots_tags', function (Blueprint $table) {
+            $table->foreign('spot_id')->references('id')->on('spots');
+            $table->foreign('tag_id')->references('id')->on('tags');
         });
     }
 

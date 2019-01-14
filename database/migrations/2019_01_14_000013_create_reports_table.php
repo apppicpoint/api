@@ -18,8 +18,12 @@ class CreateReportsTable extends Migration
             $table->text('text');
             $table->string('type');
             $table->integer('object_id');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('reports', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

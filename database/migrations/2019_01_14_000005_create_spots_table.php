@@ -19,8 +19,12 @@ class CreateSpotsTable extends Migration
             $table->text('description');
             $table->double('latitude');
             $table->double('longitude');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
+        });
+
+        Schema::table('spots', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
