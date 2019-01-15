@@ -4,14 +4,14 @@ namespace App;
 
 class Validator
 {
-	
-	public static function isValidEmail($email)
-	{
-	  $matches = null;
-	  return (1 === preg_match('/^[A-z0-9\\._-]+@[A-z0-9][A-z0-9-]*(\\.[A-z0-9_-]+)*\\.([A-z]{2,6})$/', $email, $matches));
-	}
+    
+    public static function isValidEmail($email)
+    {
+      $matches = null;
+      return (1 === preg_match('/^[A-z0-9\\._-]+@[A-z0-9][A-z0-9-]*(\\.[A-z0-9_-]+)*\\.([A-z]{2,6})$/', $email, $matches));
+    }
 
-	public static function hasOnlyOneWord($string)
+    public static function hasOnlyOneWord($string)
     {     
         
         return ctype_graph($string);
@@ -34,6 +34,19 @@ class Validator
      public static function reachesMinLength($string, $min)
     {    
         return strlen($string) >= $min;
+        
+    }
+
+   public static function isEmailInUse($email)
+    {  
+        $users = User::where('email', $email)->get();
+        foreach ($users as &$user) 
+        {
+            if ($user->email == $email) 
+            {
+                return true; 
+            }
+        }
         
     }
 }

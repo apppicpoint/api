@@ -99,7 +99,7 @@ class UserController extends Controller
             return parent::response('Los campos no pueden estar vacios', 400);
         }
 
-        if (!self::isEmailInUse($email)) {
+        if (!Validator::isEmailInUse($email)) {
            return(parent::response("El usuario no existe",400));
         }
 
@@ -138,7 +138,7 @@ class UserController extends Controller
         if (!Validator::isValidEmail($email)) {
             return parent::response('Usa un email valido.', 400);
         }
-        if (self::isEmailInUse($email)) 
+        if (Validator::isEmailInUse($email)) 
         {
             return parent::response('El email ya existe.', 400);
         } 
@@ -205,40 +205,7 @@ class UserController extends Controller
         
     }
 
-    private function isEmailInUse($email)
-    {  
-        $users = User::where('email', $email)->get();
-        foreach ($users as &$user) 
-        {
-            if ($user->email == $email) 
-            {
-                return true; 
-            }
-        }
-        
-    }
+    
 
-    private function isValidPassword($password)
-    {
-        if (strlen($password) < 8) 
-        {
-            return false;
-        }
-        else 
-        {
-            return true; 
-        }
-    }
-
-    private function isValidName($name)
-    {     
-        if(ctype_graph($name)) 
-        {
-            return true;
-        }
-        else 
-        {
-            return false; 
-        }
-    }
+    
 }
