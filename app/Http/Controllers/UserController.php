@@ -89,10 +89,10 @@ class UserController extends Controller
     
 
 
-    public function login()
+    public function login(Request $request)
     {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+        $email = $request['email'];
+        $password = $request['password'];
 
         if (Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
         {
@@ -124,12 +124,12 @@ class UserController extends Controller
 
     const ROLE_ID = 2; 
 //registrar nuevo usuario
-    public function register()
+    public function register(Request $request)
     {
-        $name = $_POST['name'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
-        $nickName = $_POST['nickName'];
+        $name = $request['name'];
+        $password = $request['password'];
+        $email = $request['email'];
+        $nickName = $request['nickName'];
 
         if (Validator::isStringEmpty($name) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
         {
