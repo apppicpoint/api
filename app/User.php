@@ -31,4 +31,44 @@ class user extends Authenticatable
     protected $table = 'users';
     
     public $timestamps = true;
+
+    public function role()
+    {
+        return $this->belongsTo('App\role');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany('App\report');
+    }
+
+    public function publications()
+    {
+        return $this->hasMany('App\publication');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\comment');
+    }
+
+    public function spots()
+    {
+        return $this->hasMany('App\spot');
+    }
+
+    public function publicationslike()
+    {
+        return $this->belongsToMany('App\publication');
+    }
+
+    public function spotsrate()
+    {
+        return $this->belongsToMany('App\spot');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\user');
+    }
 }
