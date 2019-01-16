@@ -31,8 +31,8 @@ class spot extends Model
         return $this->belongsToMany('App\User');
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany('App\tag');
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany('App\tags');
+    // }
 }

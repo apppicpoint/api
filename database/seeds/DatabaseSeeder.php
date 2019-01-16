@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'Oliver',
             'nickname' => 'oliverpk',
-            'email' => 'oliverkx@hotmail.com',
+            'email' => 'oliverikx@hotmail.com',
             'password' => Hash::make("0l1x1234"),
             'role_id' => 1,
             'created_at' => Carbon::now(),
