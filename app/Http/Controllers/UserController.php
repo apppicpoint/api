@@ -80,8 +80,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {   
-        $user->update($request->all());
+    {   if(parrent::getUserRol() != 4) {
+
+            $user->update($request->all());
+        }
     }
 
     /**
@@ -136,7 +138,7 @@ class UserController extends Controller
 
     
 
-    const ROLE_ID = 2; 
+    const ROLE_ID = 3; 
 //registrar nuevo usuario
     public function register(Request $request)
     {
@@ -179,7 +181,7 @@ class UserController extends Controller
         $user->nickName = $nickName;
         $user->save();
         
-        $token = self::generateToken($email, $password, $name, $nickName, $role_id);
+        $token = self::generateToken($email, $password, $name, $nickName, self::ROLE_ID);
             return response()->json ([
                 'token' => $token
             ]);
