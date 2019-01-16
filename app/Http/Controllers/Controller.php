@@ -37,10 +37,7 @@ class Controller extends BaseController
         return $user;
     }
 
-    protected function getUserRol(){
-        $user = self::getUserFromToken();
-        return $user->role_id;    
-    }
+    
 
     //Comprueba si el token es valido.
     protected function checkLogin()
