@@ -32,6 +32,11 @@ class Controller extends BaseController
         return $user;
     }
 
+    protected function getUserRol(){
+        $user = self::getUserFromToken();
+        return $user->role_id;    
+    }
+
     //Comprueba si el token es valido.
     protected function checkLogin()
     {   
@@ -63,7 +68,7 @@ class Controller extends BaseController
 
     protected function response($text, $code = 400){
     	return response()->json ([
-            'text' => $text
+            'value' => $text
         ],$code);
     }
 

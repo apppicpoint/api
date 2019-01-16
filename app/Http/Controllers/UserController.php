@@ -16,7 +16,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        if (parent::checkLogin() && parent::getUserRol() == 1){
+            return response()->json([
+                'users' => User::all(),
+            ]);;
+
+        }
+
+
     }
 
     /**
@@ -37,7 +44,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        self::store($request);
     }
 
     /**
@@ -69,9 +76,15 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, user $user)
-    {
-        //
+    public function update($id, Request $request)
+    {   
+        $user = User::find($id);
+        $user->name = $request['name'];
+        $encodedPassword = password_hash($request['password'], PASSWORD_DEFAULT);
+        $user->password = $encodedPassword;
+        $user->email = $request['email'];
+        $user->nickName = $request['nickName'];
+        $user->update();
     }
 
     /**
@@ -82,7 +95,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        self::deleteUser();       
+        $user = User::find($id);
+        $user->delete();
+
 
     }
 
