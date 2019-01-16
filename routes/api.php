@@ -21,4 +21,4 @@ Route::post('login', 'UserController@login');
 Route::post('register','UserController@register');
 Route::delete('deleteUser','UserController@deleteUser');
 Route::apiResource('users','UserController');
-Route::apiResource('spots','SpotsController');
+Route::apiResource('spots','SpotController');
