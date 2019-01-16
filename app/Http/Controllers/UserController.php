@@ -165,7 +165,7 @@ class UserController extends Controller
         $user->nickName = $nickName;
         $user->save();
         
-        $token = self::generateToken($user);
+        $token = self::generateToken($email, $password, $name, $nickName);
             return response()->json ([
                 'token' => $token
             ]);
