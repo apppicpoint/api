@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\spot;
+use App\User;
 use Illuminate\Http\Request;
 use App\Validator;
 
@@ -19,6 +20,16 @@ class SpotController extends Controller
 
             return response()->json([
                 'spots' => Spot::all(),
+            ]);
+        }
+    }
+
+    public function showUserSpots(Request $request, User $user)
+    {
+        if (parent::checkLogin() || parent::getUserRol() != 4){
+
+            return response()->json([
+                'spots' => Spot::where('user_id', '=', $user->id)->get(),
             ]);
         }
     }
