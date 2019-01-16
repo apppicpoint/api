@@ -26,8 +26,8 @@ class Controller extends BaseController
     }
 
     protected function getUserRol(){
-        $user = self::getUserFromToken();
-        return $user->role_id;    
+        $decodedToken = self::decodeToken();
+        return $decodedToken->role_id;    
     }
 
     protected function getUserFromToken()

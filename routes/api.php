@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('login', 'UserController@login');
+Route::post('guest', 'UserController@guestToken');
 Route::post('register','UserController@register');
 Route::delete('deleteUser','UserController@deleteUser');
 Route::apiResource('users','UserController');

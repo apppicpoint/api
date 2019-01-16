@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        self::store($request);
+        self::register($request);
     }
 
     /**
@@ -55,7 +55,10 @@ class UserController extends Controller
      */
     public function show(user $user)
     {
-        //
+        if (parent::getUserRol() != 4) {
+            return response($user);
+        }
+        
     }
 
     /**
@@ -76,15 +79,9 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function update($id, Request $request)
+    public function update(Request $request, User $user)
     {   
-        $user = User::find($id);
-        $user->name = $request['name'];
-        $encodedPassword = password_hash($request['password'], PASSWORD_DEFAULT);
-        $user->password = $encodedPassword;
-        $user->email = $request['email'];
-        $user->nickName = $request['nickName'];
-        $user->update();
+        $user->update($request->all());
     }
 
     /**
@@ -93,10 +90,12 @@ class UserController extends Controller
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::find($id);
-        $user->delete();
+        
+         if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
+            $user->delete();
+        }
 
 
     }
@@ -122,7 +121,7 @@ class UserController extends Controller
 
          if (password_verify($password, $user->password) and $user->email == $email) 
         {
-            $token = self::generateToken($email, $password, $user->name, $user->nickName);
+            $token = self::generateToken($email, $password, $user->name, $user->nickName, $user->role_id);
             return response()->json ([
                 'token' => $token
             ]);
@@ -180,7 +179,7 @@ class UserController extends Controller
         $user->nickName = $nickName;
         $user->save();
         
-        $token = self::generateToken($email, $password, $name, $nickName);
+        $token = self::generateToken($email, $password, $name, $nickName, $role_id);
             return response()->json ([
                 'token' => $token
             ]);
@@ -189,13 +188,14 @@ class UserController extends Controller
 
     
 
-    private function generateToken($email, $password, $name, $nickName)    {       
+    private function generateToken($email, $password, $name, $nickName, $role_id)    {       
 
         $dataToken = [
             'email' => $email,
             'password' => $password,
             'name' => $name,
             'nickName' => $nickName,
+            'role_id' => $role_id,
             'random' => time()
         ];
 
@@ -204,21 +204,19 @@ class UserController extends Controller
 
     }
 
+    public function guestToken(){
+        $dataToken = [            
+            'role_id' => 4,
+            'random' => time()
+        ];
 
-    public function deleteUser()
-    {
-        if (parent::checkLogin())
-        {
-            $user = self::getUserFromToken();
-            $user->delete();
-            return parent::response('Su cuenta ha sido eliminada.', 200);
-        }
-        else 
-        {
-            return parent::response('Ha ocurrido un error con su sesión.', 303);
-        }
-        
+        $token = JWT::encode($dataToken, self::TOKEN_KEY);
+        return response()->json([
+            'token' => $token
+        ]); 
     }
+
+    
 
     
 
