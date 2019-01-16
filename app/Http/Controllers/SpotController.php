@@ -14,21 +14,11 @@ class SpotController extends Controller
      */
     public function index()
     {
-        $spots = Spot::where('user_id', '=', parent::getUserFromToken()->id)->get();
-
-        if ($spots != null){
+        if (parent::checkLogin() || parent::getUserRol() != 4){
 
             return response()->json([
-                'spots' => $spots,
+                'spots' => Spot::all(),
             ]);
-
-        }
-        else {
-
-            return response()->json([
-                'alert' => 'No spots yet',
-            ]);
-
         }
     }
 
@@ -51,18 +41,21 @@ class SpotController extends Controller
     public function store(Request $request)
     {
 
-        if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
-        {
-            return parent::response('Los campos no pueden estar vacios', 400);
+        if (parent::checkLogin() && parent::getUserRol() != 4) {
+
+            if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
+            {
+                return parent::response('Los campos no pueden estar vacios', 400);
+            }
+            
+            $spot = new Spot;
+            $spot->name = $request->name;
+            $spot->description = $request->description;
+            $spot->latitude = $request->latitude;
+            $spot->longitude = $request->longitude; 
+            $spot->user_id = parent::getUserFromToken()->id;
+            $user->save();
         }
-        
-        $spot = new Spot;
-        $spot->name = $request->name;
-        $spot->description = $request->description;
-        $spot->latitude = $request->latitude;
-        $spot->longitude = $request->longitude; 
-        $spot->user_id = parent::getUserFromToken()->id;
-        $user->save();
     }
 
     /**
@@ -73,11 +66,36 @@ class SpotController extends Controller
      */
     public function show(spot $spot)
     {
-        if (parent::getUserFromToken()->id == $spot->user_id || parent::checkLogin()){
+        if (parent::checkLogin() || parent::getUserRol() == 4){
 
             return response()->json([
                 'spot' => $spot,
             ]);
+
+        }
+        
+    }
+
+    public function showUserSpots(Request $request)
+    {
+
+        if (parent::checkLogin() || parent::getUserRol() == 4){
+
+            try {
+
+                return response()->json([
+                'spots' => Spot::where('user_id', '=', parent::getUserFromToken()->id)->get(),
+                ]);
+
+            }
+            catch(\Exception $e){
+
+                return response()->json([
+                'spots' => Spot::where('user_id', '=', $request->user_id)->get(),
+                ]);
+            }
+            
+
         }
     }
 
@@ -101,9 +119,8 @@ class SpotController extends Controller
      */
     public function update(Request $request, spot $spot)
     {
-        $user = parent::getUserFromToken();
 
-        if (parent::getUserFromToken()->id == $spot->user_id || parent::checkLogin()){
+        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->update([
 
@@ -124,9 +141,8 @@ class SpotController extends Controller
      */
     public function destroy(spot $spot)
     {
-        $user = parent::getUserFromToken();
 
-        if (parent::getUserFromToken()->id == $spot->user_id || parent::checkLogin()){
+        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $category->delete();
         }
