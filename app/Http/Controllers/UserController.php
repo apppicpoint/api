@@ -80,8 +80,38 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {   if(parrent::getUserRol() != 4) {
+    {   
 
+        $name = $request['name'];
+        $password = $request['password'];
+        $email = $request['email'];
+        $nickName = $request['nickName'];
+
+        if (Validator::isStringEmpty($name) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
+        {
+            return parent::response('Los campos no pueden estar vacios', 400);
+        }
+        if (!Validator::isValidEmail($email)) {
+            return parent::response('Usa un email valido.', 400);
+        }
+        if (Validator::isEmailInUse($email)) 
+        {
+            return parent::response('El email ya existe.', 400);
+        } 
+        if (!Validator::hasOnlyOneWord($name)) 
+        {
+            return parent::response('El nombre debe contener una unica palabra.', 400);
+        }
+        if (!Validator::reachesMinLength($password,8))
+        {
+            return parent::response('Contraseña demasiado corta.', 400);
+        }
+        
+        if (Validator::exceedsMaxLength($name, 50)) {
+            return parent::response('Nombre demasiado largo.', 400);
+        }
+
+        if(parent::getUserRol() != 4) {
             $user->update($request->all());
         }
     }
