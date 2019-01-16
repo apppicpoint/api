@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\spot;
 use Illuminate\Http\Request;
+use App\Validator;
 
 class SpotController extends Controller
 {
@@ -54,7 +55,7 @@ class SpotController extends Controller
             $spot->latitude = $request->latitude;
             $spot->longitude = $request->longitude; 
             $spot->user_id = parent::getUserFromToken()->id;
-            $user->save();
+            $spot->save();
         }
     }
 
@@ -74,29 +75,6 @@ class SpotController extends Controller
 
         }
         
-    }
-
-    public function showUserSpots(Request $request)
-    {
-
-        if (parent::checkLogin() || parent::getUserRol() == 4){
-
-            try {
-
-                return response()->json([
-                'spots' => Spot::where('user_id', '=', parent::getUserFromToken()->id)->get(),
-                ]);
-
-            }
-            catch(\Exception $e){
-
-                return response()->json([
-                'spots' => Spot::where('user_id', '=', $request->user_id)->get(),
-                ]);
-            }
-            
-
-        }
     }
 
     /**
@@ -122,14 +100,7 @@ class SpotController extends Controller
 
         if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
-            $spot->update([
-
-                'name' => $request->name,
-                'description' => $request->description,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-
-            ]);
+            $spot->update($request->all());
         }
     }
 
@@ -144,7 +115,7 @@ class SpotController extends Controller
 
         if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
-            $category->delete();
+            $spot->delete();
         }
         
     }
