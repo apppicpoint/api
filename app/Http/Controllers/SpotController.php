@@ -16,7 +16,8 @@ class SpotController extends Controller
      */
     public function index(Request $request)
     {
-        if (parent::checkLogin() || parent::getUserRol() != 4){
+
+        if (parent::getUserRol() == 4 || parent::checkLogin()){
 
             $headers = getallheaders();
 
@@ -35,11 +36,15 @@ class SpotController extends Controller
                 'spots' => $spots,
             ]);
         }
+        else {
+
+            return parent::response('Access denied', 301);
+        }
     }
 
     public function showUserSpots(Request $request, User $user)
     {
-        if (parent::checkLogin() || parent::getUserRol() != 4){
+        if (parent::checkLogin() || parent::getUserRol() == 4){
 
             return response()->json([
                 'spots' => Spot::where('user_id', '=', $user->id)->get(),
