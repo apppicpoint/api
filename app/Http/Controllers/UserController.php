@@ -252,6 +252,8 @@ class UserController extends Controller
                             ->subject('Picpoint | Forgot password');
                     $message->from('apppicpoint@gmail.com','Picpoint');
                 });
+
+                return parent::response('New password sent', 200);
                 
             } catch (Exception $e) {
 
