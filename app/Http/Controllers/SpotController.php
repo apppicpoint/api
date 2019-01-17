@@ -14,12 +14,25 @@ class SpotController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (parent::checkLogin() || parent::getUserRol() != 4){
 
+            $headers = getallheaders();
+
+            if (isset($headers['search'])){
+
+                $search = $headers['search'];
+
+                $spots = Spot::where('name', "like", "%".$search."%")->orWhere('city', "like", "%".$search."%")->orWhere('country', "like", "%".$search."%")->get();
+            }
+            else {
+
+                $spots = Spot::all();
+            }
+
             return response()->json([
-                'spots' => Spot::all(),
+                'spots' => $spots,
             ]);
         }
     }
