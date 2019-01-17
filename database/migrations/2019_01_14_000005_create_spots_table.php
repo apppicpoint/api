@@ -17,6 +17,8 @@ class CreateSpotsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description');
+            $table->string('city', 30);
+            $table->string('country', 30);
             $table->double('latitude');
             $table->double('longitude');
             $table->integer('user_id')->unsigned();

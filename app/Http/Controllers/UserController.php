@@ -81,38 +81,48 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {   
+        if(parent::getUserRol() != 4) {       
 
-        $name = $request['name'];
-        $password = $request['password'];
-        $email = $request['email'];
-        $nickName = $request['nickName'];
-
-        if (Validator::isStringEmpty($name) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
-        {
-            return parent::response('Los campos no pueden estar vacios', 400);
-        }
-        if (!Validator::isValidEmail($email)) {
-            return parent::response('Usa un email valido.', 400);
-        }
-        if (Validator::isEmailInUse($email)) 
-        {
-            return parent::response('El email ya existe.', 400);
-        } 
-        if (!Validator::hasOnlyOneWord($name)) 
-        {
-            return parent::response('El nombre debe contener una unica palabra.', 400);
-        }
-        if (!Validator::reachesMinLength($password,8))
-        {
-            return parent::response('Contraseña demasiado corta.', 400);
-        }
         
-        if (Validator::exceedsMaxLength($name, 50)) {
-            return parent::response('Nombre demasiado largo.', 400);
-        }
+            if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
+                return parent::response('Usa un email valido.', 400);
+            }
+            if (Validator::isEmailInUse($request['email']) && !is_null($request['email'])) 
+            {
+                return parent::response('El email ya existe.', 400);
+            } else if(!is_null($request['email'])){
+                $user->email = $request['email'];
+            }
+            if (Validator::isNickNameInUse($request['nickName']) && !is_null($request['nickName'])) 
+            {
+                return parent::response('El nick ya existe.', 400);
+            } 
 
-        if(parent::getUserRol() != 4) {
-            $user->update($request->all());
+            if (Validator::exceedsMaxLength($request['nickName'], 30) && !is_null($request['nickName'])) {
+                return parent::response('Nick demasiado largo.', 400);
+            }else if(!is_null($request['nickName'])){
+                $user->nickName = $request['nickName'];
+            }
+            
+            if (!Validator::reachesMinLength($request['password'],8) && !is_null($request['password']))
+            {
+                return parent::response('Contraseña demasiado corta.', 400);
+            }else if(!is_null($request['password'])){
+                $encodedPassword = password_hash($request['password'], PASSWORD_DEFAULT);
+                $user->password = $encodedPassword;
+            }
+            
+            if (Validator::exceedsMaxLength($request['name'], 30) && !is_null($request['name'])) {
+                return parent::response('Nombre demasiado largo.', 400);
+            }else if(!is_null($request['name'])){
+                $user->name = $request['name'];
+            }
+            
+            $user->biography = $request['biography'];
+            $user->photo = $request['photo'];
+            $user->telephone = $request['telephone'];
+            $user->update();
+            return parent::response("Usuario modificado", 200);
         }
     }
 

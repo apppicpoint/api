@@ -49,4 +49,17 @@ class Validator
         }
         
     }
+
+    public static function isNickNameInUse($nickName)
+    {  
+        $users = User::where('nickName', $nickName)->get();
+        foreach ($users as &$user) 
+        {
+            if ($user->nickName == $nickName) 
+            {
+                return true; 
+            }
+        }
+        
+    }
 }
