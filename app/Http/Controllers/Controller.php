@@ -70,7 +70,7 @@ class Controller extends BaseController
 
     protected function response($text, $code = 400){
     	return response()->json ([
-            'value' => $text
+            'message' => $text
         ],$code);
     }
 

@@ -137,6 +137,7 @@ class UserController extends Controller
         
          if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
             $user->delete();
+            return parent::response("Usuario eliminado", 200);
         }
 
 
