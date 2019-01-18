@@ -17,37 +17,31 @@ class SpotController extends Controller
     public function index(Request $request)
     {
 
-        if (parent::getUserRol() == 4 || parent::checkLogin()){
+        $headers = getallheaders();
 
-            $headers = getallheaders();
+        if (isset($headers['search'])){
 
-            if (isset($headers['search'])){
+            $search = $headers['search'];
 
-                $search = $headers['search'];
+            $spots = Spot::where('name', "like", "%".$search."%")->orWhere('city', "like", "%".$search."%")->orWhere('country', "like", "%".$search."%")->get();
 
-                $spots = Spot::where('name', "like", "%".$search."%")->orWhere('city', "like", "%".$search."%")->orWhere('country', "like", "%".$search."%")->get();
-                
-            }
-            else if (isset($headers['user_id'])){
-
-                return response()->json([
-                'spots' => Spot::where('user_id', '=', $headers['user_id'])->get(),
-                ]);
-
-            }
-            else {
-
-                $spots = Spot::all();
-            }
+        }
+        else if (isset($headers['user_id'])){
 
             return response()->json([
-                'spots' => $spots,
+            'spots' => Spot::where('user_id', '=', $headers['user_id'])->get(),
             ]);
+
         }
         else {
 
-            return parent::response('Access denied', 301);
+            $spots = Spot::all();
         }
+
+        return response()->json([
+                'spots' => $spots,
+        ]);
+
     }
 
 
@@ -70,7 +64,7 @@ class SpotController extends Controller
     public function store(Request $request)
     {
 
-        if (parent::checkLogin() && parent::getUserRol() != 4) {
+        if (parent::getUserRol() != 4) {
 
             if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
             {
@@ -107,16 +101,9 @@ class SpotController extends Controller
      */
     public function show(spot $spot)
     {
-        if (parent::checkLogin() || parent::getUserRol() == 4){
-
-            return response()->json([
+        return response()->json([
                 'spot' => $spot,
-            ]);
-
-        }
-        else {
-            return parent::response('Access denied', 301);
-        }
+        ]);
         
     }
 
@@ -141,7 +128,7 @@ class SpotController extends Controller
     public function update(Request $request, spot $spot)
     {
 
-        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->update($request->all());
             return parent::response('Spot updated', 200);
@@ -162,7 +149,7 @@ class SpotController extends Controller
     public function destroy(spot $spot)
     {
 
-        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->delete();
             return parent::response('Spot deleted', 200);

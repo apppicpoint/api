@@ -23,4 +23,4 @@ Route::post('register','UserController@register');
 Route::delete('deleteUser','UserController@deleteUser');
 Route::post('forgotPass','UserController@forgotPassword');
 Route::apiResource('users','UserController');
-Route::apiResource('spots','SpotController');
+Route::apiResource('spots','SpotController')->middleware('check.token');
