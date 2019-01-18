@@ -16,11 +16,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (parent::checkLogin() && parent::getUserRol() == 1){
+        if (parent::checkLogin() && parent::getUserRol() == 1)
+        {
             return response()->json([
                 'users' => User::all(),
-            ]);;
-
+            ]);
+        } 
+        else 
+        {
+            parent::response("You have no permissions")
         }
 
 
@@ -85,44 +89,45 @@ class UserController extends Controller
 
         
             if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
-                return parent::response('Usa un email valido.', 400);
+                return parent::response('Use a valid email.', 400);
             }
             if (Validator::isEmailInUse($request['email']) && !is_null($request['email'])) 
             {
-                return parent::response('El email ya existe.', 400);
+                return parent::response('Email already exists', 400);
             } else if(!is_null($request['email'])){
                 $user->email = $request['email'];
             }
             if (Validator::isNickNameInUse($request['nickName']) && !is_null($request['nickName'])) 
             {
-                return parent::response('El nick ya existe.', 400);
+                return parent::response('NickName already exists', 400);
             } 
 
             if (Validator::exceedsMaxLength($request['nickName'], 30) && !is_null($request['nickName'])) {
-                return parent::response('Nick demasiado largo.', 400);
+                return parent::response('NickName too long', 400);
             }else if(!is_null($request['nickName'])){
                 $user->nickName = $request['nickName'];
             }
             
             if (!Validator::reachesMinLength($request['password'],8) && !is_null($request['password']))
             {
-                return parent::response('Contraseña demasiado corta.', 400);
+                return parent::response('Password too short.', 400);
             }else if(!is_null($request['password'])){
                 $encodedPassword = password_hash($request['password'], PASSWORD_DEFAULT);
                 $user->password = $encodedPassword;
             }
             
             if (Validator::exceedsMaxLength($request['name'], 30) && !is_null($request['name'])) {
-                return parent::response('Nombre demasiado largo.', 400);
+                return parent::response('Name too long.', 400);
             }else if(!is_null($request['name'])){
                 $user->name = $request['name'];
             }
+            
             
             $user->biography = $request['biography'];
             $user->photo = $request['photo'];
             $user->telephone = $request['telephone'];
             $user->update();
-            return parent::response("Usuario modificado", 200);
+            return parent::response("User modified", 200);
         }
     }
 
@@ -137,7 +142,7 @@ class UserController extends Controller
         
          if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
             $user->delete();
-            return parent::response("Usuario eliminado", 200);
+            return parent::response("User deleted", 200);
         }
 
 
@@ -153,11 +158,11 @@ class UserController extends Controller
 
         if (Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
         {
-            return parent::response('Los campos no pueden estar vacios', 400);
+            return parent::response('Fields cannot be empty', 400);
         }
 
         if (!Validator::isEmailInUse($email)) {
-           return(parent::response("El usuario no existe",400));
+           return(parent::response("User doesn't exist",400));
         }
 
         $user = parent::findUser($email);
@@ -171,7 +176,7 @@ class UserController extends Controller
         }
         else 
         {            
-            return parent::response('Datos incorrectos', 400);
+            return parent::response('Invalid inputs', 400);
         }
 
 
@@ -190,26 +195,29 @@ class UserController extends Controller
 
         if (Validator::isStringEmpty($name) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
         {
-            return parent::response('Los campos no pueden estar vacios', 400);
+            return parent::response('Fields cannot be empty', 400);
         }
         if (!Validator::isValidEmail($email)) {
-            return parent::response('Usa un email valido.', 400);
+            return parent::response('Use a valid email.', 400);
         }
         if (Validator::isEmailInUse($email)) 
         {
-            return parent::response('El email ya existe.', 400);
+            return parent::response('Email already exists', 400);
         } 
-        if (!Validator::hasOnlyOneWord($name)) 
+        if (!Validator::hasOnlyOneWord($nickName)) 
         {
-            return parent::response('El nombre debe contener una unica palabra.', 400);
+            return parent::response('NickName must be only one word', 400);
         }
         if (!Validator::reachesMinLength($password,8))
         {
-            return parent::response('Contraseña demasiado corta.', 400);
+            return parent::response('Password too short', 400);
         }
         
         if (Validator::exceedsMaxLength($name, 50)) {
-            return parent::response('Nombre demasiado largo.', 400);
+            return parent::response('Name too long', 400);
+        }
+        if (Validator::exceedsMaxLength($nickName, 50)) {
+            return parent::response('NickName too long', 400);
         }
         
 
