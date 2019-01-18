@@ -14,25 +14,36 @@ class SpotController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        if (parent::checkLogin() || parent::getUserRol() != 4){
+
+        $headers = getallheaders();
+
+        if (isset($headers['search'])){
+
+            $search = $headers['search'];
+
+            $spots = Spot::where('name', "like", "%".$search."%")->orWhere('city', "like", "%".$search."%")->orWhere('country', "like", "%".$search."%")->get();
+
+        }
+        else if (isset($headers['user_id'])){
 
             return response()->json([
-                'spots' => Spot::all(),
+            'spots' => Spot::where('user_id', '=', $headers['user_id'])->get(),
             ]);
+
         }
+        else {
+
+            $spots = Spot::all();
+        }
+
+        return response()->json([
+                'spots' => $spots,
+        ]);
+
     }
 
-    public function showUserSpots(Request $request, User $user)
-    {
-        if (parent::checkLogin() || parent::getUserRol() != 4){
-
-            return response()->json([
-                'spots' => Spot::where('user_id', '=', $user->id)->get(),
-            ]);
-        }
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -53,20 +64,32 @@ class SpotController extends Controller
     public function store(Request $request)
     {
 
-        if (parent::checkLogin() && parent::getUserRol() != 4) {
+        if (parent::getUserRol() != 4) {
 
             if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
             {
-                return parent::response('Los campos no pueden estar vacios', 400);
+                return parent::response('Dont let blank fields', 400);
+            }
+
+            else {
+
+                $spot = new Spot;
+                $spot->name = $request->name;
+                $spot->description = $request->description;
+                $spot->latitude = $request->latitude;
+                $spot->longitude = $request->longitude;
+                $spot->city = $request->city; 
+                $spot->country = $request->country; 
+                $spot->user_id = parent::getUserFromToken()->id;
+                $spot->save();
+
+                return parent::response('Spot created', 200);
             }
             
-            $spot = new Spot;
-            $spot->name = $request->name;
-            $spot->description = $request->description;
-            $spot->latitude = $request->latitude;
-            $spot->longitude = $request->longitude; 
-            $spot->user_id = parent::getUserFromToken()->id;
-            $spot->save();
+            
+        }
+        else {
+            return parent::response('Access denied', 301);
         }
     }
 
@@ -78,13 +101,9 @@ class SpotController extends Controller
      */
     public function show(spot $spot)
     {
-        if (parent::checkLogin() || parent::getUserRol() == 4){
-
-            return response()->json([
+        return response()->json([
                 'spot' => $spot,
-            ]);
-
-        }
+        ]);
         
     }
 
@@ -109,9 +128,15 @@ class SpotController extends Controller
     public function update(Request $request, spot $spot)
     {
 
-        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->update($request->all());
+            return parent::response('Spot updated', 200);
+
+        }
+        else {
+
+            return parent::response('Access denied', 301);
         }
     }
 
@@ -124,9 +149,14 @@ class SpotController extends Controller
     public function destroy(spot $spot)
     {
 
-        if (parent::checkLogin() && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->delete();
+            return parent::response('Spot deleted', 200);
+        }
+        else {
+
+            return parent::response('Access denied', 301);
         }
         
     }
