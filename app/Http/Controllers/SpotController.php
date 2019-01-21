@@ -65,7 +65,6 @@ class SpotController extends Controller
     {
 
         if (parent::getUserRol() != 4) {
-
             if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
             {
                 return parent::response('Dont let blank fields', 400);

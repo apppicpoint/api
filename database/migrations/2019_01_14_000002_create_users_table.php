@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->integer('telephone')->nullable(true);
             $table->string('photo')->nullable(true);
             $table->integer('role_id')->unsigned();
+            $table->boolean('banned')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

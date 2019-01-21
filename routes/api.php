@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('getUserRol', 'UserController@getUserRol');
 Route::post('login', 'UserController@login');
 Route::post('guest', 'UserController@guestToken');
 Route::post('register','UserController@register');
@@ -24,3 +25,4 @@ Route::delete('deleteUser','UserController@deleteUser');
 Route::post('forgotPass','UserController@forgotPassword');
 Route::apiResource('users','UserController');
 Route::apiResource('spots','SpotController')->middleware('check.token');
+Route::put('users/changeBannedState/{user}','UserController@changeBannedState');
