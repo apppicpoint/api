@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('photo')->nullable(true);
             $table->integer('role_id')->unsigned();
             $table->boolean('banned')->default(false);
-            $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 

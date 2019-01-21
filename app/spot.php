@@ -3,9 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class spot extends Model
 {
+    use Notifiable;
+    use SoftDeletes;
+ 
+    protected $dates = ['deleted_at'];
     protected  $fillable = ['name','description','latitude','longitude','user_id'];
     protected $table = 'spots';
     public $timestamps = true;

@@ -12,7 +12,7 @@ use Mail;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra todos los usuarios registrados si el usuario que lo pide tiene el rol de administrador
      *
      * @return \Illuminate\Http\Response
      */
@@ -50,11 +50,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        self::register($request);
+
     }
 
     /**
-     * Display the specified resource.
+     * Muestra el usuario pedido por parametro.
      *
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
@@ -81,7 +81,11 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Comprueba el rol del usuario y valida todos los campos.
+     * Si un campo requerido (email) no es rellenado, se considerá que no se quiere modificar y se mantendrá
+     * en la base de datos como está.
+     * Si un campo no requerido (biografía) no es rellenado, se enviará a la base de datos vacío.
+     * Una vez modificados todos los datos se actualizará la bd.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\user  $user
@@ -141,7 +145,7 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Marca como "eliminado" el usuario especificado.
      *
      * @param  \App\user  $user
      * @return \Illuminate\Http\Response
@@ -159,7 +163,12 @@ class UserController extends Controller
 
     
 
-
+    /**
+     * Valida las credenciales del usuario y devuelve un token 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request)
     {
         $email = $request['email'];
@@ -178,10 +187,11 @@ class UserController extends Controller
 
          if (password_verify($password, $user->password) and $user->email == $email) 
         {
-            $token = self::generateToken($email, $password, $user->name, $user->nickName, $user->role_id);
+            $token = self::generateToken($user);
             return response()->json ([
                 'token' => $token,
-                'role_id' => $user->role_id
+                'role_id' => $user->role_id,
+                'user_id' => $user->id
             ]);
         }
         else 
@@ -194,8 +204,16 @@ class UserController extends Controller
 
     
 
-    const ROLE_ID = 3; 
-//registrar nuevo usuario
+    const STANDARD_ROLE_ID = 3; 
+    const GUEST_ROLE_ID = 4;
+
+    /**
+     * Valida todos los campos, registra al usuario en la base de datos y devuelve un token 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
     public function register(Request $request)
     {
         $name = $request['name'];
@@ -238,17 +256,24 @@ class UserController extends Controller
         $user->name = $name;
         $user->password = $encodedPassword;
         $user->email = $email;
-        $user->role_id = ($request['role_id']) ? $request['role_id'] : $role_id = self::ROLE_ID;;
+        $user->role_id = ($request['role_id']) ? $request['role_id'] : $role_id = self::STANDARD_ROLE_ID;;
         $user->nickName = $nickName;
         $user->save();
         
-        $token = self::generateToken($email, $password, $name, $nickName, self::ROLE_ID);
+        $token = self::generateToken($user);
           return response()->json ([
                 'token' => $token,
-                'role_id' => $user->role_id
+                'role_id' => $user->role_id,
+                'user_id' => $user->id
             ]);
     }
 
+    /**
+     * Comprueba si existe el email, genera una nueva contraseña y le envia un correo al usuario.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function forgotPassword(Request $request){
 
          if (Validator::isEmailInUse($request->email)){
@@ -285,15 +310,20 @@ class UserController extends Controller
          }
     }
     
-
-    private function generateToken($email, $password, $name, $nickName, $role_id)    {       
+    /**
+     * Genera un token a partir de los daros del usuario.
+     *
+     * @param  $user
+     * @return $token
+     */
+    private function generateToken(User $user)    {       
 
         $dataToken = [
-            'email' => $email,
-            'password' => $password,
-            'name' => $name,
-            'nickName' => $nickName,
-            'role_id' => $role_id,
+            'email' => $user->email,
+            'password' => $user->password,
+            'name' => $user->name,
+            'nickName' => $user->nickName,
+            'role_id' => $user->role_id,
             'random' => time()
         ];
 
@@ -302,19 +332,30 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Genera un token de invitado
+     *
+     * @return $token
+     */
     public function guestToken(){
         $dataToken = [            
-            'role_id' => 4,
+            'role_id' => self::GUEST_ROLE_ID,
             'random' => time()
         ];
 
         $token = JWT::encode($dataToken, self::TOKEN_KEY);
         return response()->json([
-            'token' => $token
+            'token' => $token,
+            'role_id' => self::GUEST_ROLE_ID
         ]); 
     }
 
-    
+
+/**
+     * Obtiene el rol del usuario a partir de un token.
+     *
+     * @return \Illuminate\Http\Response
+     */    
     public function getUserRol(){
         $role = parent::getUserRol();
         return response()->json ([
@@ -322,6 +363,12 @@ class UserController extends Controller
             ]);
     }
     
+    /**
+     * Alterna el estado del usuario entre bloqueado y desbloqueado.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */    
     public function changeBannedState(User $user)
     {
         $user->banned = !$user->banned;
