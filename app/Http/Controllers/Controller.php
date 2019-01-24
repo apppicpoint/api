@@ -87,6 +87,8 @@ class Controller extends BaseController
         }
     }
 
+    // Devuelve una password con unos caracteres aleatorios
+
     protected function randomPassword(){
 
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
