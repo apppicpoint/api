@@ -16,6 +16,9 @@ class CheckToken
      * @param  \Closure  $next
      * @return mixed
      */
+
+    // Comprueba si en la cabecera hay un token, y que es válido(la clave del token es la de la app). Si es correcto, la petición continua.
+
     public function handle($request, Closure $next)
     {
         $headers = getallheaders();

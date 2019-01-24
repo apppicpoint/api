@@ -14,6 +14,12 @@ class SpotController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // Devuelve todos los spots.
+    // Si le pasamos un user_id, devuelve los spots de ese usuario.
+    // Si le pasamos un cadena de caracteres por el parametro search, busca spots que contengan esa cadena en su nombre, país, o ciudad.
+
+
     public function index(Request $request)
     {
 
@@ -61,6 +67,9 @@ class SpotController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // Crea un spot
+
     public function store(Request $request)
     {
 
@@ -98,6 +107,9 @@ class SpotController extends Controller
      * @param  \App\spot  $spot
      * @return \Illuminate\Http\Response
      */
+
+    // Devuelve la información del spot seleccionado
+
     public function show(spot $spot)
     {
         return response()->json([
@@ -124,6 +136,9 @@ class SpotController extends Controller
      * @param  \App\spot  $spot
      * @return \Illuminate\Http\Response
      */
+
+    // Actualiza los campos del spot editado
+
     public function update(Request $request, spot $spot)
     {
 
@@ -145,6 +160,9 @@ class SpotController extends Controller
      * @param  \App\spot  $spot
      * @return \Illuminate\Http\Response
      */
+
+    // Elimina el spot seleccionado
+
     public function destroy(spot $spot)
     {
 

@@ -274,6 +274,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // Recibe un email, comprueba que está registrado, e intenta enviar el email con la nueva password. 
+
     public function forgotPassword(Request $request){
 
          if (Validator::isEmailInUse($request->email)){
