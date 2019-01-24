@@ -186,14 +186,20 @@ class UserController extends Controller
         $user = parent::findUser($email);
 
          if (password_verify($password, $user->password) and $user->email == $email) 
-        {
-            $token = self::generateToken($user);
+        {   if ($user->banned) {
+                return parent::response('You have been banned', 301);
+            }
+            else {
+                $token = self::generateToken($user);
             return response()->json ([
                 'token' => $token,
                 'role_id' => $user->role_id,
                 'user_id' => $user->id
             ]);
+            }
         }
+            
+        
         else 
         {            
             return parent::response('Invalid inputs', 400);
