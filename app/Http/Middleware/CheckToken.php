@@ -31,7 +31,7 @@ class CheckToken
             } catch (Exception $e){
 
                 return response()->json ([
-                    'message' => 'Access denied'
+                    'message' => 'Access denied 2'
                 ],301);
             }
 
@@ -39,7 +39,7 @@ class CheckToken
         else {
 
             return response()->json ([
-                    'message' => 'Access denied'
+                    'message' => 'Access denied 1'
             ],301);
         }
         
