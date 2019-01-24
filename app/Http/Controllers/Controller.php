@@ -32,6 +32,7 @@ class Controller extends BaseController
 
     protected function getUserFromToken()
     {
+       
         $decodedToken = self::decodeToken();
         $user = self::findUser($decodedToken->email);
         return $user;
