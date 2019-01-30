@@ -21,6 +21,7 @@ class CreateSpotsTable extends Migration
             $table->string('country', 30);
             $table->double('latitude');
             $table->double('longitude');
+            $table->string('image');
             $table->integer('user_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
