@@ -87,7 +87,8 @@ class SpotController extends Controller
                 $spot->latitude = $request->latitude;
                 $spot->longitude = $request->longitude;
                 $spot->city = $request->city; 
-                $spot->country = $request->country; 
+                $spot->country = $request->country;
+                $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
                 $spot->save();
 
