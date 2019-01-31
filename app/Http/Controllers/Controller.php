@@ -89,12 +89,12 @@ class Controller extends BaseController
 
     // Devuelve una password con unos caracteres aleatorios
 
-    protected function randomPassword(){
+    protected function randomString($size){
 
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $count = mb_strlen($chars);
 
-        for ($i = 0, $result = ''; $i < 8; $i++) {
+        for ($i = 0, $result = ''; $i < $size; $i++) {
             $index = rand(0, $count - 1);
             $result .= mb_substr($chars, $index, 1);
         }
