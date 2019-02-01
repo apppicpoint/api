@@ -21,8 +21,7 @@ class ImageController extends Controller
 		$originalImg = $request->file('img');
   // crear instancia de imagen
 		$image = Image::make($originalImg);
-		//$imgName = $request->file('img')->getClientOriginalName();
-		$imgName = parent::randomString(15)
+		$imgName = $request->file('img')->getClientOriginalName();
 		$image->resize(300,300);
   // guardar imagen
   // save( [ruta], [calidad])

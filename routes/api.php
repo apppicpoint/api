@@ -27,4 +27,4 @@ Route::apiResource('users','UserController');
 Route::apiResource('spots','SpotController')->middleware('check.token');
 Route::put('users/changeBannedState/{user}','UserController@changeBannedState');
 Route::post('img','ImageController@store');
-Route::get('image/{filename}','ImageController@getImage');
+Route::get('img/{filename}','ImageController@getImage');

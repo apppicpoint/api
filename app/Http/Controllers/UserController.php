@@ -290,7 +290,7 @@ class UserController extends Controller
             try {
 
                 $user = parent::findUser($request->email);
-                $newPassword = parent::randomPassword();
+                $newPassword = parent::randomString(8);
                 $to_name = $user->name;
                 $to_email = $user->email;
 
