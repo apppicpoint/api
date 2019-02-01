@@ -17,6 +17,9 @@ class ImageController extends Controller
 
   // ruta de las imagenes guardadas
 		$rute = public_path().'/img/';
+		if (!file_exists($rute)) {
+            mkdir($rute, 666, true);
+        }
   // recogida del form
 		$originalImg = $request->file('img');
   // crear instancia de imagen
