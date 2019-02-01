@@ -178,4 +178,57 @@ class SpotController extends Controller
         }
         
     }
+
+     public function distance(Request $request)
+    {
+
+        if ($request->filled("lat1") or $request->filled("lon1") or $request->filled("distanceUser"))
+        {
+            $lat1 = $_POST['lat1'];
+            $lon1 = $_POST['lon1'];
+            $distanceUser = $_POST['distanceUser'];
+
+            $radius = 6378.137; // earth mean radius defined by WGS84
+
+            //Listado de points creados a un rango de $distanceUser 
+            $spotNear = spot::whereBetween('latitude', [$lat1 - $distanceUser, $lat1 + $distanceUser])->whereBetween('longitude', [$lon1 - $distanceUser, $lon1 + $distanceUser])->get();
+
+            // var_dump(count($spotNear));
+            //Mira la distancia entre puntos
+            foreach ($spotNear as $spots => $spot) 
+            {
+                $dlon = $lon1 - $spot->longitude; 
+                $distance = acos( sin(deg2rad($lat1)) * sin(deg2rad($spot->latitude)) +  cos(deg2rad($lat1)) * cos(deg2rad($spot->latitude)) * cos(deg2rad($dlon))) * $radius; 
+
+                $spot->distance_user = $distance;
+                $spotArray = [];
+                $distanceArray = [];
+                $combine = [];
+                // array_push($spotArray, $spot);
+
+                array_push($spotArray, $spot);
+                array_push($distanceArray, $distance);
+            }
+            $combine = array_combine($spotArray, $distanceArray);
+            return $combine;
+
+            return response()->json([
+                'spot' => $spot,
+
+            ]);
+
+        }  
+    }
+    public function checkSpotNear(Request $request)
+    {
+        if ($request->filled("lat1") or $request->filled("lon1"))
+        {
+            $lat1 = $_POST['lat1'];
+            $lon1 = $_POST['lon1'];
+
+            $spotSave = spot::whereBetween('latitude', [$lat1 - 0.015, $lat1 + 0.015])->whereBetween('longitude', [$lon1 - 0.015, $lon1 + 0.015])->get();
+
+            return $spotSave;
+        }
+    }
 }

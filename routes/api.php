@@ -28,3 +28,5 @@ Route::apiResource('spots','SpotController')->middleware('check.token');
 Route::put('users/changeBannedState/{user}','UserController@changeBannedState');
 Route::post('img','ImageController@store');
 Route::get('img/{filename}','ImageController@getImage');
+Route::post('distance', 'SpotController@distance');
+Route::post('checkSpotNear', 'SpotController@checkSpotNear');

@@ -13,7 +13,7 @@ class spot extends Model
     use SoftDeletes;
  
     protected $dates = ['deleted_at'];
-    protected  $fillable = ['name','description','latitude','longitude','user_id', 'image'];
+    protected  $fillable = ['name','description','latitude','longitude','user_id', 'image', 'distance_user'];
     protected $table = 'spots';
     public $timestamps = true;
 
