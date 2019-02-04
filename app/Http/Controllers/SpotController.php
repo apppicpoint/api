@@ -69,7 +69,6 @@ class SpotController extends Controller
      */
 
     // Crea un spot
-
     public function store(Request $request)
     {
 
@@ -94,8 +93,6 @@ class SpotController extends Controller
 
                 return parent::response('Spot created', 200);
             }
-            
-            
         }
         else {
             return parent::response('Access denied', 301);
@@ -204,6 +201,7 @@ class SpotController extends Controller
                 $spotArray = [];
                 $distanceArray = [];
                 $combine = [];
+
                 // array_push($spotArray, $spot);
 
                 array_push($spotArray, $spot);
