@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1b2db672ad0323c1f496fba92415103b685bfd48
 <?php
 
 namespace App\Http\Controllers;
@@ -232,6 +235,5 @@ class SpotController extends Controller
             return is_null($spotSave);
         }
     }
+
 }
-=======
->>>>>>> 6e6afff5d161c5e5d0f921c64c6d552250468ba1
