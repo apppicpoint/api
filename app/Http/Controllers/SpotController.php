@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 namespace App\Http\Controllers;
@@ -232,3 +233,5 @@ class SpotController extends Controller
         }
     }
 }
+=======
+>>>>>>> 6e6afff5d161c5e5d0f921c64c6d552250468ba1
