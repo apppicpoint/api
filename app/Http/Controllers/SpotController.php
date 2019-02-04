@@ -200,7 +200,7 @@ class SpotController extends Controller
             {
                 $dlon = $longitude - $spot->longitude; 
                 $distance = acos( sin(deg2rad($latitude)) * sin(deg2rad($spot->latitude)) +  cos(deg2rad($latitude)) * cos(deg2rad($spot->latitude)) * cos(deg2rad($dlon))) * $radius; 
-
+  
                 $spot->distance_user = $distance;
                 
                 //$distanceArray = [];
