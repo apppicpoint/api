@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1b2db672ad0323c1f496fba92415103b685bfd48
 <?php
 
 namespace App\Http\Controllers;
@@ -230,9 +226,11 @@ class SpotController extends Controller
             $latitude = $_POST['latitude'];
             $longitude = $_POST['longitude'];
 
-            $spotSave = spot::whereBetween('latitude', [$latitude - 0.015, $latitude + 0.015])->whereBetween('longitude', [$longitude - 0.015, $longitude + 0.015])->first();
+            $spotSave = spot::whereBetween('latitude', [$latitude - 0.00015, $latitude + 0.00015])->whereBetween('longitude', [$longitude - 0.00015, $longitude + 0.00015])->first();
 
-            return is_null($spotSave);
+            return response()->json([
+                'spot' => is_null($spotSave),
+            ]);
         }
     }
 
