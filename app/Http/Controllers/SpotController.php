@@ -182,7 +182,7 @@ class SpotController extends Controller
      public function distance(Request $request)
     {
 
-        if ($request->filled("latitude") or $request->filled("longitude") or $request->filled("distanceUser"))
+        if ($request->filled("latitude") or $request->filled("longitude") or $request->filled("distance"))
         {
             $latitude = $_POST['latitude'];
             $longitude = $_POST['longitude'];
