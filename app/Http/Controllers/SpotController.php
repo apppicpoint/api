@@ -186,35 +186,50 @@ class SpotController extends Controller
         {
             $latitude = $_POST['latitude'];
             $longitude = $_POST['longitude'];
-            $distanceUser = $_POST['distanceUser'];
+            $distanceUser = $_POST['distance'];
+    
+                $spotSave = spot::all();
+                $spotNear = [];
 
-            $radius = 6378.137; // earth mean radius defined by WGS84
+                foreach ($spotSave as $spots => $spot) 
+                {
+                    $dlon = $longitude - $spot->longitude; 
+                    $degrees = rad2deg(acos((sin(deg2rad($latitude))*sin(deg2rad($spot->latitude))) + (cos(deg2rad($latitude))*cos(deg2rad($spot->latitude))*cos(deg2rad($longitude-$spot->longitude)))));
+                    $distance = $degrees * 111.13384;
 
-            //Listado de points creados a un rango de $distanceUser 
-            $spotNear = spot::whereBetween('latitude', [$latitude - $distanceUser, $latitude + $distanceUser])->whereBetween('longitude', [$longitude - $distanceUser, $longitude + $distanceUser])->get();
+                    if($distance <= $distanceUser)
+                    {
+                        $spot->distance_user = $distance;
+                        array_push($spotNear, $spot);
+                    }
 
-            // var_dump(count($spotNear));
-            //Mira la distancia entre puntos
-            $spotArray = [];
-            foreach ($spotNear as $spots => $spot) 
-            {
-                $dlon = $longitude - $spot->longitude; 
-                $distance = acos( sin(deg2rad($latitude)) * sin(deg2rad($spot->latitude)) +  cos(deg2rad($latitude)) * cos(deg2rad($spot->latitude)) * cos(deg2rad($dlon))) * $radius; 
-  
-                $spot->distance_user = $distance;
-                
-                //$distanceArray = [];
-                //$combine = [];
-                // array_push($spotArray, $spot);
+                }
 
-                array_push($spotArray, $spot);
-                //array_push($distanceArray, $distance);
-            }
-            //$combine = array_combine($spotArray, $distanceArray); 
-            //return $combine;
+                for ($i=0; $i < count($spotNear) ; $i++) 
+                { 
+                    if($i + 1 >= count($spotNear))
+                    {
+                        break;
+                    }
+
+                    $actual = $spotNear[$i];
+                    $siguiente = $spotNear[$i + 1];
+
+
+                    if($actual->distance_user > $siguiente->distance_user)
+                    {
+
+                        $spotNear[$i] = $siguiente;
+                        $spotNear[$i + 1] = $actual;
+                        $i = -1;
+                    }
+                    
+                   
+                }
+
 
             return response()->json([
-                'spots' => $spotArray,
+                'spots' => $spotNear,
             ]);
 
         }  
@@ -226,7 +241,7 @@ class SpotController extends Controller
             $latitude = $_POST['latitude'];
             $longitude = $_POST['longitude'];
 
-            $spotSave = spot::whereBetween('latitude', [$latitude - 0.00015, $latitude + 0.00015])->whereBetween('longitude', [$longitude - 0.00015, $longitude + 0.00015])->first();
+            $spotSave = spot::whereBetween('latitude', [$latitude - 0.0009722, $latitude + 0.0009722])->whereBetween('longitude', [$longitude - 0.0009722, $longitude + 0.0009722])->first();
 
             return response()->json([
                 'spot' => is_null($spotSave),

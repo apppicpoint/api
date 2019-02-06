@@ -222,11 +222,10 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $name = $request['name'];
         $password = $request['password'];
         $email = $request['email'];
         $nickName = $request['nickName'];
-        if (Validator::isStringEmpty($name) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
+        if (Validator::isStringEmpty($nickName) or Validator::isStringEmpty($password) or Validator::isStringEmpty($email)) 
         {
             return parent::response('Fields cannot be empty', 400);
         }
@@ -246,9 +245,7 @@ class UserController extends Controller
             return parent::response('Password too short', 400);
         }
         
-        if (Validator::exceedsMaxLength($name, 50)) {
-            return parent::response('Name too long', 400);
-        }
+        
         if (Validator::exceedsMaxLength($nickName, 50)) {
             return parent::response('NickName too long', 400);
         }
@@ -259,7 +256,6 @@ class UserController extends Controller
 
         $encodedPassword = password_hash($password, PASSWORD_DEFAULT);
         $user = new User;
-        $user->name = $name;
         $user->password = $encodedPassword;
         $user->email = $email;
         $user->role_id = ($request['role_id']) ? $request['role_id'] : $role_id = self::STANDARD_ROLE_ID;;
