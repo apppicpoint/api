@@ -234,6 +234,7 @@ class SpotController extends Controller
 
         }  
     }
+    //Esta función devuelve en booleano si puede o no poner un punto
     public function checkSpotNear(Request $request)
     {
         if ($request->filled("latitude") or $request->filled("longitude"))
@@ -241,7 +242,7 @@ class SpotController extends Controller
             $latitude = $_POST['latitude'];
             $longitude = $_POST['longitude'];
 
-            $spotSave = spot::whereBetween('latitude', [$latitude - 0.0009722, $latitude + 0.0009722])->whereBetween('longitude', [$longitude - 0.0009722, $longitude + 0.0009722])->first();
+            $spotSave = spot::whereBetween('latitude', [$latitude - 0.00015, $latitude + 0.00015])->whereBetween('longitude', [$longitude - 0.00015, $longitude + 0.00015])->first();
 
             return response()->json([
                 'spot' => is_null($spotSave),
