@@ -157,8 +157,6 @@ class UserController extends Controller
             $user->delete();
             return parent::response("User deleted", 200);
         }
-
-
     }
 
     
@@ -236,9 +234,13 @@ class UserController extends Controller
         {
             return parent::response('Email already exists', 400);
         } 
+        if (Validator::isNickNameInUse($nickName)) 
+        {
+            return parent::response('Nickname already exists', 400);
+        } 
         if (!Validator::hasOnlyOneWord($nickName)) 
         {
-            return parent::response('NickName must be only one word', 400);
+            return parent::response('Nickname must be only one word', 400);
         }
         if (!Validator::reachesMinLength($password,8))
         {
@@ -258,7 +260,7 @@ class UserController extends Controller
         $user = new User;
         $user->password = $encodedPassword;
         $user->email = $email;
-        $user->role_id = ($request['role_id']) ? $request['role_id'] : $role_id = self::STANDARD_ROLE_ID;;
+        $user->role_id = ($request['role_id']) ? $request['role_id'] : $role_id = self::STANDARD_ROLE_ID;
         $user->nickName = $nickName;
         $user->save();
         

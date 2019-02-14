@@ -62,4 +62,16 @@ class Validator
         }
         
     }
+
+    public static function isTagNameInUse($string)
+    {
+        $tags = tags::where('name', $string)->get();
+        foreach ($tags as $tag => $string)
+        {
+            if($tag->name == $string)
+            {
+                return true;
+            }
+        }
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\spots_tag;
 use Illuminate\Http\Request;
+use App\spot;
+use App\tags;
 
 class SpotsTagController extends Controller
 {
@@ -35,7 +37,31 @@ class SpotsTagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $spot_id = $request['spot_id'];
+        $tag_id = $request['tag_id'];
+        $spot = spot::where('id', '=', $spot_id)->exists();
+        $tag = tags::where('id', $tag_id)->exists();
+
+        if(is_null($spot) || is_null($spot_id)){
+            return parent::response("Something is null",400);
+        }
+
+        if(!$spot){
+            return parent::response("That spot doesn't exist", 400);
+
+        }
+        
+        if(!$tag){
+            return parent::response("That tag doesn't exist", 400);
+        }
+
+        $spotTag = new spots_tag;
+        $spotTag->spot_id = $spot_id;
+        $spotTag->tag_id = $tag_id;
+
+        $spotTag->save();
+
+        return parent::response("Relatioship created", 200);
     }
 
     /**

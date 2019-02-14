@@ -53,7 +53,7 @@ class Controller extends BaseController
         }        
         else             
         {
-            return response ('no tienes permisos', 301);
+            return self::response('permission denied', 301);
         }
 
     }

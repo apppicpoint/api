@@ -76,10 +76,8 @@ class SpotController extends Controller
         if (parent::getUserRol() != 4) {
             if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
             {
-                return parent::response('Dont let blank fields', 400);
-            }
-
-            else {
+                return parent::response('Dont leave blank fields', 400);
+            } else {
 
                 $spot = new Spot;
                 $spot->name = $request->name;
@@ -96,8 +94,7 @@ class SpotController extends Controller
             }
             
             
-        }
-        else {
+        } else {
             return parent::response('Access denied', 301);
         }
     }
@@ -148,8 +145,7 @@ class SpotController extends Controller
             $spot->update($request->all());
             return parent::response('Spot updated', 200);
 
-        }
-        else {
+        } else {
 
             return parent::response('Access denied', 301);
         }

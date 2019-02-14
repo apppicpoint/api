@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+        
         DB::table('users')->insert([
             'name' => 'Picpoint',
             'nickname' => 'Picpoint',
@@ -209,6 +210,169 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Aerial',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Architectural',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Candid',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Documentary',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Fashion',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Food',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Landscape',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Long-exposure',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Photojournalism',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Conceptual',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Portraiture',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Sport',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Street',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'War',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Wildlife',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Wedding',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Underwater',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Abstract',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Medical',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Aviation',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Old-time',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Narrative',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Nature',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+
     }
     
 }
