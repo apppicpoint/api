@@ -140,14 +140,14 @@ class TagsController extends Controller
     }
 
     //Buscar tag mientras escribes
-    public function searchTagByName($string){
+    public function searchTagByName(Request $request){
 
-        $tags = tags::whereHas('tag', function($query){
-            $query->where('name', $string);
-        })->get();
+        $string = $request['string'];
+        var_dump($string);
+        $tags = tags::where('name', '%'.$string.'%');
 
         return response()->json([
-            'tag' => $tags
+            'tags' => $tags
         ]); 
 
     }

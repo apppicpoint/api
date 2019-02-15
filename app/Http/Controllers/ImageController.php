@@ -15,22 +15,19 @@ class ImageController extends Controller
 	public function store(Request $request)
 	{		
 
-  		// ruta de las imagenes guardadas
+  // ruta de las imagenes guardadas
 		$rute = public_path().'/img/';
 		if (!file_exists($rute)) {
             mkdir($rute, 666, true);
         }
-  		
-  		// recogida del form
+  // recogida del form
 		$originalImg = $request->file('img');
-  		
-  		// crear instancia de imagen
+  // crear instancia de imagen
 		$image = Image::make($originalImg);
 		$imgName = $request->file('img')->getClientOriginalName();
 		$image->resize(300,300);
-  		
-  		// guardar imagen
-  		// save( [ruta], [calidad])
+  // guardar imagen
+  // save( [ruta], [calidad])
 		$image->save($rute . $imgName, 100);
 		return parent::response("Image uploaded", 200);
 	}	
@@ -38,7 +35,8 @@ class ImageController extends Controller
 
     public function getImage($fileName){       
 
-        $path = public_path().'/img/'.$fileName.'.jpeg';
+
+        $path = public_path().'/img/'.$fileName.'.png';
 
 	    $file = File::get($path);
 	    $type = File::mimeType($path);
