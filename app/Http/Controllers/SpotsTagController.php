@@ -16,7 +16,16 @@ class SpotsTagController extends Controller
      */
     public function index()
     {
-        //
+        if (parent::checkLogin() && parent::getUserRol() == 1)
+        {
+            return response()->json([
+                'spot_tag' => spots_tag::all(),
+            ]);
+        } 
+        else 
+        {
+            return parent::response("You have no permissions", 403);
+        }
     }
 
     /**
@@ -47,8 +56,7 @@ class SpotsTagController extends Controller
         }
 
         if(!$spot){
-            return parent::response("That spot doesn't exist", 400);
-
+            return parent::response("That point doesn't exist", 400);
         }
         
         if(!$tag){

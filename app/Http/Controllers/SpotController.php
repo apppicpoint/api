@@ -6,6 +6,8 @@ use App\spot;
 use App\User;
 use Illuminate\Http\Request;
 use App\Validator;
+use App\spots_tag;
+use App\tags;
 
 class SpotController extends Controller
 {
@@ -22,7 +24,6 @@ class SpotController extends Controller
 
     public function index(Request $request)
     {
-
         $headers = getallheaders();
 
         if (isset($headers['search'])){
@@ -31,21 +32,18 @@ class SpotController extends Controller
 
             $spots = Spot::where('name', "like", "%".$search."%")->orWhere('city', "like", "%".$search."%")->orWhere('country', "like", "%".$search."%")->get();
 
-        }
-        else if (isset($headers['user_id'])){
+        } else if (isset($headers['user_id'])) {
 
             return response()->json([
             'spots' => Spot::where('user_id', '=', $headers['user_id'])->get(),
             ]);
 
-        }
-        else {
-
+        } else {
             $spots = Spot::all();
         }
 
         return response()->json([
-                'spots' => $spots,
+            'spots' => $spots,
         ]);
 
     }
@@ -72,7 +70,6 @@ class SpotController extends Controller
 
     public function store(Request $request)
     {
-
         if (parent::getUserRol() != 4) {
             if (Validator::isStringEmpty($request->name) or Validator::isStringEmpty($request->description) or Validator::isStringEmpty($request->latitude) or Validator::isStringEmpty($request->longitude)) 
             {
@@ -88,11 +85,26 @@ class SpotController extends Controller
                 $spot->country = $request->country;
                 $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
+                
                 $spot->save();
 
+                $tags_id = $request->tags_id;
+
+                if(!is_null($tags_id)){
+                    
+                    $tags = tags::all();
+                    
+                    foreach ($tags_id as $tag_id) {
+                        $tagRelationShip = new spots_tag;
+                        $tagRelationShip->spot_id = $spot->id;
+                        
+                        $tagRelationShip->tag_id = $tag_id;
+                        
+                        $tagRelationShip->save();
+                    }
+                }
                 return parent::response('Spot created', 200);
             }
-            
             
         } else {
             return parent::response('Access denied', 301);
@@ -111,9 +123,8 @@ class SpotController extends Controller
     public function show(spot $spot)
     {
         return response()->json([
-                'spot' => $spot,
+            'spot' => $spot,
         ]);
-        
     }
 
     /**
@@ -139,14 +150,10 @@ class SpotController extends Controller
 
     public function update(Request $request, spot $spot)
     {
-
         if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
-
             $spot->update($request->all());
             return parent::response('Spot updated', 200);
-
         } else {
-
             return parent::response('Access denied', 301);
         }
     }
@@ -162,7 +169,6 @@ class SpotController extends Controller
 
     public function destroy(spot $spot)
     {
-
         if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
 
             $spot->delete();
@@ -172,7 +178,6 @@ class SpotController extends Controller
 
             return parent::response('Access denied', 301);
         }
-        
     }
 
      public function distance(Request $request)
@@ -184,50 +189,44 @@ class SpotController extends Controller
             $longitude = $_POST['longitude'];
             $distanceUser = $_POST['distance'];
     
-                $spotSave = spot::all();
-                $spotNear = [];
+            $spotSave = spot::all();
+            $spotNear = [];
 
-                foreach ($spotSave as $spots => $spot) 
+            foreach ($spotSave as $spots => $spot) 
+            {
+                $dlon = $longitude - $spot->longitude; 
+                $degrees = rad2deg(acos((sin(deg2rad($latitude))*sin(deg2rad($spot->latitude))) + (cos(deg2rad($latitude))*cos(deg2rad($spot->latitude))*cos(deg2rad($longitude-$spot->longitude)))));
+                $distance = $degrees * 111.13384;
+
+                if($distance <= $distanceUser)
                 {
-                    $dlon = $longitude - $spot->longitude; 
-                    $degrees = rad2deg(acos((sin(deg2rad($latitude))*sin(deg2rad($spot->latitude))) + (cos(deg2rad($latitude))*cos(deg2rad($spot->latitude))*cos(deg2rad($longitude-$spot->longitude)))));
-                    $distance = $degrees * 111.13384;
+                    $spot->distance_user = $distance;
+                    array_push($spotNear, $spot);
+                }
+            }
 
-                    if($distance <= $distanceUser)
-                    {
-                        $spot->distance_user = $distance;
-                        array_push($spotNear, $spot);
-                    }
-
+            for ($i=0; $i < count($spotNear) ; $i++) 
+            { 
+                if($i + 1 >= count($spotNear))
+                {
+                    break;
                 }
 
-                for ($i=0; $i < count($spotNear) ; $i++) 
-                { 
-                    if($i + 1 >= count($spotNear))
-                    {
-                        break;
-                    }
+                $actual = $spotNear[$i];
+                $siguiente = $spotNear[$i + 1];
 
-                    $actual = $spotNear[$i];
-                    $siguiente = $spotNear[$i + 1];
+                if($actual->distance_user > $siguiente->distance_user)
+                {
 
-
-                    if($actual->distance_user > $siguiente->distance_user)
-                    {
-
-                        $spotNear[$i] = $siguiente;
-                        $spotNear[$i + 1] = $actual;
-                        $i = -1;
-                    }
-                    
-                   
+                    $spotNear[$i] = $siguiente;
+                    $spotNear[$i + 1] = $actual;
+                    $i = -1;
                 }
-
+            }
 
             return response()->json([
                 'spots' => $spotNear,
             ]);
-
         }  
     }
     //Esta función devuelve en booleano si puede o no poner un punto

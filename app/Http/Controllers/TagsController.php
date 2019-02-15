@@ -23,7 +23,6 @@ class TagsController extends Controller
         return response()->json([
             'tags' => tags::all(),
         ]);
-        
     }
 
     /**
@@ -66,9 +65,16 @@ class TagsController extends Controller
      * @param  \App\tags  $tags
      * @return \Illuminate\Http\Response
      */
-    public function show(tags $tags)
+    public function show($id)
     {
-        //
+        if(!parent::checkLogin()){
+            return parent::response("You don't have permissions", 403);
+        }
+
+        $tag = tags::where('id', $id)->first();
+        return response()->json([
+            'tag' => $tag
+        ]);
     }
 
     /**
@@ -89,26 +95,30 @@ class TagsController extends Controller
      * @param  \App\tags  $tags
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tags $tags)
+    public function update(Request $request, $id)
     {
         if(parent::getUserRol() == 1){
 
-            if(Validator::isStringEmpty($request['name'])){
+            $newName = $request['name'];
+
+            if(Validator::isStringEmpty($newName)){
                 return parent::response("Cannot be any empty field", 400);
             }
 
-            if(Validator::isTagNameInUse($request['name'])){
+            if(Validator::isTagNameInUse($newName)){
                 return parent::response("This tag name already exists", 400);
             }
 
-            if(is_null($request['name'])){
+            if(is_null($newName)){
                 return parent::response("The name cannot be empty", 400);
             }
+            $tag = tags::where('id', $id)->first();
 
-            $tags->name = $request['name'];
-            $tags->update($request->all());
+            $tag->name = $newName;
+            $tag->update();
 
             return parent::response("Tag modified",200);
+
         } else {
             return parent::response("You don't have permissions", 403);
         }
@@ -121,13 +131,24 @@ class TagsController extends Controller
      * @param  \App\tags  $tags
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tags $tags)
-    {
-        if(parent::checkLogin() && parent::getUserRol() == 1){
-            $tags->delete();
+    public function destroy($id)
+    {   
+        $tag = tags::where('id', $id)->first();
 
-            return parent::response("Tag deleted", 200);
-        }
-        
+        $tag->delete();
+        return parent::response("Tag deleted", 200);
+    }
+
+    //Buscar tag mientras escribes
+    public function searchTagByName($string){
+
+        $tags = tags::whereHas('tag', function($query){
+            $query->where('name', $string);
+        })->get();
+
+        return response()->json([
+            'tag' => $tags
+        ]); 
+
     }
 }

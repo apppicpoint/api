@@ -99,12 +99,14 @@ class UserController extends Controller
             if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
                 return parent::response('Use a valid email.', 400);
             }
+
             if (Validator::isEmailInUse($request['email']) && !is_null($request['email']) && $request['email'] != $user->email) 
             {
                 return parent::response('Email already exists', 400);
             } else if(!is_null($request['email'])){
                 $user->email = $request['email'];
             }
+
             if (Validator::isNickNameInUse($request['nickName']) && !is_null($request['nickName']) && $request['nickName'] != $user->nickName) 
             {
                 return parent::response('NickName already exists', 400);
@@ -112,27 +114,27 @@ class UserController extends Controller
 
             if (Validator::exceedsMaxLength($request['nickName'], 30) && !is_null($request['nickName'])) {
                 return parent::response('NickName too long', 400);
-            }else if(!is_null($request['nickName'])){
+            } else if(!is_null($request['nickName'])){
                 $user->nickName = $request['nickName'];
             }
             
             if (!Validator::reachesMinLength($request['password'],8) && !is_null($request['password']))
             {
                 return parent::response('Password too short.', 400);
-            }else if(!is_null($request['password'])){
+            } else if(!is_null($request['password'])){
                 $encodedPassword = password_hash($request['password'], PASSWORD_DEFAULT);
                 $user->password = $encodedPassword;
             }
             
             if (Validator::exceedsMaxLength($request['name'], 30) && !is_null($request['name'])) {
                 return parent::response('Name too long.', 400);
-            }else if(!is_null($request['name'])){
+            } else if(!is_null($request['name'])){
                 $user->name = $request['name'];
             }
             
             if ($request['role_id'] < 1 or $request['role_id'] > 3 and !is_null($request['role_id'])) {
-            return parent::response('This is not a correct user status', 400);
-            }else if (!is_null($request['role_id'])){
+                return parent::response('This is not a correct user status', 400);
+            } else if (!is_null($request['role_id'])){
                 $user->role_id = $request['role_id'];
             }
             
@@ -152,7 +154,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        
          if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
             $user->delete();
             return parent::response("User deleted", 200);
@@ -227,9 +228,11 @@ class UserController extends Controller
         {
             return parent::response('Fields cannot be empty', 400);
         }
+        
         if (!Validator::isValidEmail($email)) {
             return parent::response('Use a valid email.', 400);
         }
+        
         if (Validator::isEmailInUse($email)) 
         {
             return parent::response('Email already exists', 400);
@@ -238,24 +241,25 @@ class UserController extends Controller
         {
             return parent::response('Nickname already exists', 400);
         } 
+
         if (!Validator::hasOnlyOneWord($nickName)) 
         {
             return parent::response('Nickname must be only one word', 400);
         }
+        
         if (!Validator::reachesMinLength($password,8))
         {
             return parent::response('Password too short', 400);
         }
-        
-        
+
         if (Validator::exceedsMaxLength($nickName, 50)) {
             return parent::response('NickName too long', 400);
         }
+        
         if (($request['role_id'] < 1 or $request['role_id'] > 3) and !is_null($request['role_id'])) {
             return parent::response('This is not a correct user status', 400);
         }
         
-
         $encodedPassword = password_hash($password, PASSWORD_DEFAULT);
         $user = new User;
         $user->password = $encodedPassword;
@@ -265,7 +269,7 @@ class UserController extends Controller
         $user->save();
         
         $token = self::generateToken($user);
-          return response()->json ([
+            return response()->json ([
                 'token' => $token,
                 'role_id' => $user->role_id,
                 'user_id' => $user->id
