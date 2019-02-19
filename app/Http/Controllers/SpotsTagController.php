@@ -51,7 +51,7 @@ class SpotsTagController extends Controller
         $spot = spot::where('id', '=', $spot_id)->exists();
         $tag = tags::where('id', $tag_id)->exists();
 
-        if(is_null($spot) || is_null($spot_id)){
+        if(is_null($tag_id) || is_null($spot_id)){
             return parent::response("Something is null",400);
         }
 
@@ -78,9 +78,13 @@ class SpotsTagController extends Controller
      * @param  \App\spots_tag  $spots_tag
      * @return \Illuminate\Http\Response
      */
-    public function show(spots_tag $spots_tag)
+    public function show($id)
     {
-        //
+        $tagDeSpot = spots_tag::where('spot_id','=', $id)->get();
+
+        return response()->json([
+            "relacion" => $tagDeSpot
+        ]);
     }
 
     /**

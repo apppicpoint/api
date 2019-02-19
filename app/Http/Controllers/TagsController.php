@@ -9,6 +9,9 @@ use App\Validator;
 
 class TagsController extends Controller
 {
+
+    
+
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +27,20 @@ class TagsController extends Controller
             'tags' => tags::all(),
         ]);
     }
+
+    public function array_sort_by($arrIni, $col, $order = SORT_ASC)
+    {
+        $arrAux = array();
+        foreach ($arrIni as $key => $row)
+        {
+            $arrAux[$key] = is_object($row) ? $arrAux[$key] = $row->$col : $row[$col];
+            $arrAux[$key] = strtolower($arrAux[$key]);
+        }
+
+        array_multisort($arrAux, $order, $arrIni);
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -140,15 +157,11 @@ class TagsController extends Controller
     }
 
     //Buscar tag mientras escribes
-    public function searchTagByName(Request $request){
-
-        $string = $request['string'];
-        var_dump($string);
-        $tags = tags::where('name', '%'.$string.'%');
+    public function selectTagByName($name){
+        $tags = tags::where('name', $name)->first();
 
         return response()->json([
             'tags' => $tags
         ]); 
-
     }
 }

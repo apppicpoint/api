@@ -210,6 +210,12 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
+            DB::table('tags')->insert([
+            'name' => 'Abstract',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
 
             DB::table('tags')->insert([
             'name' => 'Aerial',
@@ -226,7 +232,21 @@ class DatabaseSeeder extends Seeder
             ]);
 
             DB::table('tags')->insert([
+            'name' => 'Aviation',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
             'name' => 'Candid',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Conceptual',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
@@ -268,14 +288,35 @@ class DatabaseSeeder extends Seeder
             ]);
 
             DB::table('tags')->insert([
-            'name' => 'Photojournalism',
+            'name' => 'Medical',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
             ]);
 
             DB::table('tags')->insert([
-            'name' => 'Conceptual',
+            'name' => 'Narrative',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Nature',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Old-time',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+
+            ]);
+
+            DB::table('tags')->insert([
+            'name' => 'Photojournalism',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
@@ -303,14 +344,14 @@ class DatabaseSeeder extends Seeder
             ]);
 
             DB::table('tags')->insert([
-            'name' => 'War',
+            'name' => 'Underwater',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
             ]);
 
             DB::table('tags')->insert([
-            'name' => 'Wildlife',
+            'name' => 'War',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
@@ -324,53 +365,13 @@ class DatabaseSeeder extends Seeder
             ]);
 
             DB::table('tags')->insert([
-            'name' => 'Underwater',
+            'name' => 'Wildlife',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 
             ]);
 
-            DB::table('tags')->insert([
-            'name' => 'Abstract',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
-
-            DB::table('tags')->insert([
-            'name' => 'Medical',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
-
-            DB::table('tags')->insert([
-            'name' => 'Aviation',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
-
-            DB::table('tags')->insert([
-            'name' => 'Old-time',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
-
-            DB::table('tags')->insert([
-            'name' => 'Narrative',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
-
-            DB::table('tags')->insert([
-            'name' => 'Nature',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-
-            ]);
+            
 
 
     }
