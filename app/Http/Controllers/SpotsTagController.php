@@ -92,7 +92,7 @@ class SpotsTagController extends Controller
             $tag = tags::where('tag_id', '=', $spot_tag['tag_id']);
             $tags = [];
             foreach ($tags as $i) {
-                $i = $tag;
+                $i[] = $tag;
                 return response()->json([
                     "tags" => $tags,
                 ]);
