@@ -88,10 +88,10 @@ class SpotsTagController extends Controller
         $spot_tags = spots_tag::where('spot_id','=', $spot_id)->get();
         
         //Sacar objeto tag de la relación
-        foreach ($spot_tag as $spot_tags) { 
+        foreach ($spot_tags as $spot_tag) { 
             $tag = tags::where('tag_id', '=', $spot_tag['tag_id']);
             $tags = [];
-            foreach ($i as $tags) {
+            foreach ($tags as $i) {
                 $i = $tag;
             }
         }
