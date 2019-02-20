@@ -32,5 +32,5 @@ Route::post('distance', 'SpotController@distance');
 Route::post('checkSpotNear', 'SpotController@checkSpotNear');
 Route::apiResource('tag', 'TagsController');
 Route::apiResource('spotTag', 'SpotsTagController');
-Route::get('spotHasTags', 'SpotsTagController@spotHasTags');
+Route::post('spotHasTags', 'SpotsTagController@spotHasTags');
 Route::get('select', 'TagsController@selectTagByName');
