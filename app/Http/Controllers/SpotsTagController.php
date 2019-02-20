@@ -94,13 +94,12 @@ class SpotsTagController extends Controller
             $tags = [];
             foreach ($tag as $i) {
                 $tags[] = $i;
-                var_dump($tags);
-                return response()->json([
-                    "tags" => $tags,
-                ]);
+                var_dump($tags);   
             }
         }
-      
+        return response()->json([
+            "tags" => $tags,
+        ]);
         
     }
 
