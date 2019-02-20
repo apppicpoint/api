@@ -93,12 +93,13 @@ class SpotsTagController extends Controller
             $tags = [];
             foreach ($tags as $i) {
                 $i = $tag;
+                return response()->json([
+                    "tags" => $tags,
+                ]);
             }
         }
       
-        return response()->json([
-            "tags" => $tags,
-        ]);
+        
     }
 
     /**
