@@ -85,11 +85,20 @@ class SpotsTagController extends Controller
 
     public function spotHasTags(Request $request){
         $spot_id = $request->spot_id;
-        $tags = spots_tag::where('spot_id','=', $spot_id)->get();
-
+        $spot_tags = spots_tag::where('spot_id','=', $spot_id)->get();
+        $tag_id = $spot_tags->tag_id;
+        
+        //Sacar objeto tag de la relación
+        foreach($spot_tag as $key => $spot_tags) {
+            $tag = tags::where('tag_id', '=', $spot_tag->tag_id);
+            $tags = [];
+            foreach ($i as $key => $tags) {
+                $tags[] = $i;
+            }
+        }
+        
         return response()->json([
             "tags" => $tags,
-            "spot_id" => $spot_id
         ]);
     }
 
