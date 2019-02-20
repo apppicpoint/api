@@ -78,12 +78,14 @@ class SpotsTagController extends Controller
      * @param  \App\spots_tag  $spots_tag
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $tagDeSpot = spots_tag::where('spot_id','=', $id)->get();
+        $spot_id = $request->spot_id;
+        $spots = spots_tag::where('spot_id','=', $spot_id)->get();
+
 
         return response()->json([
-            "relacion" => $tagDeSpot
+            "spots" => $spots
         ]);
     }
 
