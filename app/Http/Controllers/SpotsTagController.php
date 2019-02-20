@@ -94,15 +94,14 @@ class SpotsTagController extends Controller
             array_push($tags, $spot_tags[$i]["tag_id"]);
         }
 
+         $arrayTags = [];
         for ($i=0; $i < count($tags); $i++) { 
-
-            $arrayTags = tags::where('id', $tags[$i])->first();
+            array_push($arrayTags , tags::where('id', $tags[$i])->first());
         }
 
         return response()->json([
             'tags' => $arrayTags
         ]);
-        
     }
 
     /**
