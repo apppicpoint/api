@@ -90,18 +90,15 @@ class SpotController extends Controller
 
                 if(!is_null($tags_id)){
                     
-                    $tags = tags::all();
-                    
                     foreach ($tags_id as $tag_id) {
                         $tagRelationShip = new spots_tag;
                         $tagRelationShip->spot_id = $spot->id;
-                        
                         $tagRelationShip->tag_id = $tag_id;
                         
                         $tagRelationShip->save();                        
                     }
                 }
-                
+
                 return parent::response('Spot created', 200);
             }
             
@@ -164,11 +161,17 @@ class SpotController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // Elimina el spot seleccionado
+    // Elimina el spot seleccionado y las relaciones con los tags
 
     public function destroy(spot $spot)
     {
         if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
+
+            $spotTags = spots_tag::where('spot_id', $spot->id)->get();
+            
+            foreach ($spotTags as $relationship) {
+                $relationship->delete();
+            }
 
             $spot->delete();
             return parent::response('Spot deleted', 200);

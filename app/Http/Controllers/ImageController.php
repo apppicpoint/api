@@ -25,7 +25,6 @@ class ImageController extends Controller
   		// crear instancia de imagen
 		$image = Image::make($originalImg);
 		$imgName = $request->file('img')->getClientOriginalName();
-		$image->resize(300,300);
 
 		if(is_null($originalImg))
 		{
@@ -34,22 +33,17 @@ class ImageController extends Controller
 
 		$allowedMimeTypes = ['image/png'];
 		$contentType = mime_content_type($rute);
-		/*
-		if(! in_array($contentType, $allowedMimeTypes))
-		{
-		  	return parent::response("Not a valid image", 400);
-		}*/
-/*
-		if($image->width < 300 && $image->height < 300)
-		{
-			return parent::response("Image too big", 400);
-		}
-  */
+		
   		// guardar imagen
  		// save([ruta], [calidad])
-		$image->save($rute . $imgName, 100);
+		$image->save($rute . $imgName, 300);
 		return parent::response("Image uploaded", 200);
 	}	
+
+	//Hace la imagen cuadrada
+	public function previewImage($image: Image){
+		$image->resize(300,300);
+	}
 
     public function getImage($fileName)
     {       

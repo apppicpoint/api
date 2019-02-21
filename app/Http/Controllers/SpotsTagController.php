@@ -83,6 +83,7 @@ class SpotsTagController extends Controller
         
     }
 
+//Este método devuelve un array de los tags de un spot
     public function spotHasTags(Request $request)
     {
         $spot_id = $request->spot_id;
