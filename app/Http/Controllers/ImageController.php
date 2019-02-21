@@ -37,7 +37,7 @@ class ImageController extends Controller
 		
   		// guardar imagen
  		// save([ruta], [calidad])
-		$image->save($rute . $imgName, 300);
+		$image->save($rute . $imgName, 100);
 		return parent::response("Image uploaded", 200);
 	}
 
@@ -47,7 +47,7 @@ class ImageController extends Controller
 	}
 	*/
 
-	/*function crop_image($image) {
+	function crop_image($image) {
 
 	    //$x_o и $y_o - Output image top left angle coordinates on input image
 	    //$w_o и h_o - Width and height of output image
@@ -82,7 +82,7 @@ class ImageController extends Controller
 	    imagecopy($img_o, $img_i, 0, 0, $x_o/2, $y_o/2, $w_o, $h_o); // Move part of image from input to output
 	    $func = 'image'.$ext; // Function that allows to save the result
 	    return $func($img_o, $image); // Overwrite input image with output on server, return action's result    
-	}*/
+	}
 
     public function getImage($fileName)
     {       
