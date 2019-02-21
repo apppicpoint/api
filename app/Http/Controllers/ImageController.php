@@ -25,7 +25,7 @@ class ImageController extends Controller
   		// crear instancia de imagen
 		$image = Image::make($originalImg);
 		$imgName = $request->file('img')->getClientOriginalName();
-
+		$previewImage($image, 300,300);
 		if(is_null($originalImg))
 		{
 			return parent::response("null img",400);
@@ -41,8 +41,8 @@ class ImageController extends Controller
 	}	
 
 	//Hace la imagen cuadrada
-	public function previewImage($image: Image){
-		$image->resize(300,300);
+	public function previewImage($image: Image, $width,$height){
+		$image->resize($width,$height);
 	}
 
     public function getImage($fileName)
