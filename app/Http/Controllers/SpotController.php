@@ -75,7 +75,6 @@ class SpotController extends Controller
             {
                 return parent::response('Dont leave blank fields', 400);
             } else {
-
                 $spot = new Spot;
                 $spot->name = $request->name;
                 $spot->description = $request->description;
@@ -85,11 +84,9 @@ class SpotController extends Controller
                 $spot->country = $request->country;
                 $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
-                $tags_id = $request->tag_id;
+                $tags_id = $request->tag_id; //puede ser un array de tags
                 
                 $spot->save();
-
-                
 
                 if(!is_null($tags_id)){
                     
@@ -101,13 +98,10 @@ class SpotController extends Controller
                         
                         $tagRelationShip->tag_id = $tag_id;
                         
-                        $tagRelationShip->save();
-                        var_dump("relacion spot tag creada");
-                        
+                        $tagRelationShip->save();                        
                     }
-                }else {
-                    var_dump("tags_id is null");
                 }
+                
                 return parent::response('Spot created', 200);
             }
             
