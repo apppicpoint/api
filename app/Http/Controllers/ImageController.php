@@ -25,7 +25,9 @@ class ImageController extends Controller
   		// crear instancia de imagen
 		$image = Image::make($originalImg);
 		$imgName = $request->file('img')->getClientOriginalName();
-		$image->resize(300,300);
+
+		$filename = pathinfo($_FILES['img']['name'], PATHINFO_FILENAME);
+		self::crop_image($filename);
 
 		if(is_null($originalImg))
 		{
