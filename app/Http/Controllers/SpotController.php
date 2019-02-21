@@ -85,10 +85,11 @@ class SpotController extends Controller
                 $spot->country = $request->country;
                 $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
+                $tags_id = $request->tag_id;
                 
                 $spot->save();
 
-                $tags_id = $request->tags_id;
+                
 
                 if(!is_null($tags_id)){
                     
@@ -101,7 +102,11 @@ class SpotController extends Controller
                         $tagRelationShip->tag_id = $tag_id;
                         
                         $tagRelationShip->save();
+                        var_dump("relacion spot tag creada");
+                        
                     }
+                }else {
+                    var_dump("tags_id is null");
                 }
                 return parent::response('Spot created', 200);
             }
