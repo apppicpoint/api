@@ -27,8 +27,8 @@ class ImageController extends Controller
 		$imgName = $request->file('img')->getClientOriginalName();
 
 		$filename = pathinfo($_FILES['img']['name'], PATHINFO_FILENAME);
-		$image = self::crop_image($filename);
-		//$image->resize(300,300);
+		//$image = self::crop_image($filename);
+		$image->resize(300,300);
 
 		if(is_null($originalImg))
 		{
