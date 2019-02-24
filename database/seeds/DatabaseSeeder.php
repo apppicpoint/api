@@ -371,7 +371,32 @@ class DatabaseSeeder extends Seeder
 
             ]);
 
-            
+            DB::table('publications')->insert([
+            'description' => 'foto de Moncloa',
+            'media' => 'moncloa',
+            'user_id' => '1',
+            'spot_id' => '2',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+            ]);
+
+            DB::table('publications')->insert([
+            'description' => 'foto de Gandía',
+            'media' => 'gandia',
+            'user_id' => '1',
+            'spot_id' => '4',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+            ]);
+
+            DB::table('publications')->insert([
+            'description' => 'foto de Sevilla',
+            'media' => 'sevilla',
+            'user_id' => '2',
+            'spot_id' => '6',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+            ]);
 
 
     }

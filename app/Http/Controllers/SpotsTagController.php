@@ -16,16 +16,9 @@ class SpotsTagController extends Controller
      */
     public function index()
     {
-        if (parent::checkLogin() && parent::getUserRol() == 1)
-        {
-            return response()->json([
-                'spot_tag' => spots_tag::all(),
-            ]);
-        } 
-        else 
-        {
-            return parent::response("You have no permissions", 403);
-        }
+        return response()->json([
+            'spot_tag' => spots_tag::all(),
+        ]);
     }
 
     /**
@@ -95,7 +88,7 @@ class SpotsTagController extends Controller
             array_push($tags, $spot_tags[$i]["tag_id"]);
         }
 
-         $arrayTags = [];
+        $arrayTags = [];
         for ($i=0; $i < count($tags); $i++) { 
             array_push($arrayTags , tags::where('id', $tags[$i])->first());
         }

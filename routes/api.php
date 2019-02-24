@@ -34,3 +34,5 @@ Route::apiResource('tag', 'TagsController');
 Route::apiResource('spotTag', 'SpotsTagController');
 Route::post('spotHasTags', 'SpotsTagController@spotHasTags');
 Route::get('select', 'TagsController@selectTagByName');
+Route::apiResource('publications', 'PublicationController');
+Route::get('spotPublications', 'PublicationController@getSpotPublications');
