@@ -133,7 +133,12 @@ class PublicationController extends Controller
      */
     public function update(Request $request, publication $publication)
     {
-        //
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $publication->user_id || parent::getUserRol() == 1){
+                        $publication->update($request->all());
+            return parent::response($publication->description, 200);
+        } else {
+            return parent::response('Access denied', 301);
+        }
     }
 
     /**
