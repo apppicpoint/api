@@ -110,7 +110,9 @@ class PublicationController extends Controller
      */
     public function show(publication $publication)
     {
-        //
+        return response()->json([
+            'publication' => $publication,
+        ]);
     }
 
     /**
@@ -149,6 +151,19 @@ class PublicationController extends Controller
      */
     public function destroy(publication $publication)
     {
-        //
+        if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $publication->user_id || parent::getUserRol() == 1){
+
+            $publicationTag = publications_tag::where('publication_id', $publication->id)->get();
+            
+            foreach ($publicationTag as $relationship) {
+                $relationship->delete();
+            }
+
+            $publication->delete();
+            return parent::response('Publication deleted', 200);
+        }
+        else {
+            return parent::response('Access denied', 301);
+        }
     }
 }

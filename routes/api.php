@@ -27,11 +27,14 @@ Route::apiResource('users','UserController');
 Route::apiResource('spots','SpotController')->middleware('check.token');
 Route::put('users/changeBannedState/{user}','UserController@changeBannedState');
 Route::post('img','ImageController@store');
-Route::get('img/{filename}','ImageController@getImage');
+Route::get('imgFull/{filename}','ImageController@getFullImage');
+Route::get('imgLow/{filename}','ImageController@getLowImage');
+
 Route::post('distance', 'SpotController@distance');
 Route::post('checkSpotNear', 'SpotController@checkSpotNear');
 Route::apiResource('tag', 'TagsController');
 Route::apiResource('spotTag', 'SpotsTagController');
+Route::apiResource('publicationTag', 'PublicationTagController');
 Route::post('spotHasTags', 'SpotsTagController@spotHasTags');
 Route::get('select', 'TagsController@selectTagByName');
 Route::apiResource('publications', 'PublicationController');
