@@ -59,7 +59,7 @@ class ImageController extends Controller
 	
 	public function getFullImage($fileName)
 	{       
-		$path = storage_path() . self::FULL_RESOLUTION_IMAGE_PATH . $fileName;
+		$path = storage_path() . self::FULL_RESOLUTION_IMAGE_PATH . $fileName . '.png';;
 		$file = File::get($path);
 		$type = File::mimeType($path);
 		$response = Response::make($file, 200);
@@ -70,7 +70,7 @@ class ImageController extends Controller
 
 	public function getLowImage($fileName)
 	{       
-		$path = storage_path() . self::LOW_RESOLUTION_IMAGE_PATH . $fileName;
+		$path = storage_path() . self::LOW_RESOLUTION_IMAGE_PATH . $fileName . '.png';
 		$file = File::get($path);
 		$type = File::mimeType($path);
 		$response = Response::make($file, 200);
