@@ -224,7 +224,7 @@ class SpotController extends Controller
                 }
             }
 
-            foreach ($spots as $spot) {                        
+            foreach ($spotsNear as $spot) {                        
             $spot->tags;
             }
             return response()->json([
