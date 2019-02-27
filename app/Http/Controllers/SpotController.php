@@ -42,6 +42,9 @@ class SpotController extends Controller
             $spots = Spot::all();
         }
 
+        foreach ($spots as $spot) {                        
+            $spot->tags;
+        }
         return response()->json([
             'spots' => $spots,
         ]);
@@ -187,7 +190,7 @@ class SpotController extends Controller
             $distanceUser = $_POST['distance'];
     
             $spotSave = spot::all();
-            $spotNear = [];
+            $spotsNear = [];
 
             foreach ($spotSave as $spots => $spot) 
             {
@@ -198,31 +201,34 @@ class SpotController extends Controller
                 if($distance <= $distanceUser)
                 {
                     $spot->distance_user = $distance;
-                    array_push($spotNear, $spot);
+                    array_push($spotsNear, $spot);
                 }
             }
 
-            for ($i=0; $i < count($spotNear) ; $i++) 
+            for ($i=0; $i < count($spotsNear) ; $i++) 
             { 
-                if($i + 1 >= count($spotNear))
+                if($i + 1 >= count($spotsNear))
                 {
                     break;
                 }
 
-                $actual = $spotNear[$i];
-                $siguiente = $spotNear[$i + 1];
+                $actual = $spotsNear[$i];
+                $siguiente = $spotsNear[$i + 1];
 
                 if($actual->distance_user > $siguiente->distance_user)
                 {
 
-                    $spotNear[$i] = $siguiente;
-                    $spotNear[$i + 1] = $actual;
+                    $spotsNear[$i] = $siguiente;
+                    $spotsNear[$i + 1] = $actual;
                     $i = -1;
                 }
             }
 
+            foreach ($spots as $spot) {                        
+            $spot->tags;
+            }
             return response()->json([
-                'spots' => $spotNear,
+                'spots' => $spotsNear,
             ]);
         }  
     }

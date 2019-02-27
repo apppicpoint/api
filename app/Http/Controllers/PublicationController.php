@@ -29,6 +29,9 @@ class PublicationController extends Controller
             $publications = publication::all();
         }
 
+        foreach ($publications as $publication) {                        
+            $publication->tags;
+        }
         return response()->json([
             'publications' => $publications,
         ]);
