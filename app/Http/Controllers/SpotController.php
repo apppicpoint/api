@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Validator;
 use App\spots_tag;
-use App\tags;
+use App\tag;
 
 class SpotController extends Controller
 {
@@ -84,18 +84,12 @@ class SpotController extends Controller
                 $spot->country = $request->country;
                 $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
-                $tags_id = $request->tag_id; //puede ser un array de tags
+                $tags_id = $request->tags_id; //puede ser un array de tags              
                 
-                $spot->save();
 
-                if(!is_null($tags_id)){
-                    
-                    foreach ($tags_id as $tag_id) {
-                        $tagRelationShip = new spots_tag;
-                        $tagRelationShip->spot_id = $spot->id;
-                        $tagRelationShip->tag_id = $tag_id;
-                        
-                        $tagRelationShip->save();                        
+                if(!is_null($tags_id) && $spot->save()){                    
+                    foreach ($tags_id as $tag_id) {                        
+                        $spot->tags()->attach($tag_id);                  
                     }
                 }
 
@@ -118,29 +112,14 @@ class SpotController extends Controller
 
     public function show(spot $spot)
     {
+        $spot->tags;
         return response()->json([
             'spot' => $spot,
+            
+
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\spot  $spot
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(spot $spot)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\spot  $spot
-     * @return \Illuminate\Http\Response
-     */
 
     // Actualiza los campos del spot editado
 

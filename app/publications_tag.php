@@ -19,4 +19,6 @@ class publications_tag extends Model
     {
         return $this->belongsTo('App\tag');
     }
+
+
 }

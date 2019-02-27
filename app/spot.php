@@ -38,8 +38,8 @@ class spot extends Model
         return $this->belongsToMany('App\User');
     }
 
-    // public function tags()
-    // {
-    //     return $this->belongsToMany('App\tags');
-    // }
+    public function tags()
+    {
+        return $this->belongsToMany(tag::class, 'spots_tags', 'spot_id', 'tag_id')->withTimestamps();
+    }
 }

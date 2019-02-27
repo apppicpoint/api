@@ -80,17 +80,11 @@ class PublicationController extends Controller
                     $publication->spot_id = $request->spot_id;
                 }
                 $publication->user_id = parent::getUserFromToken()->id;
-                $tags_id = $request->tag_id; //puede ser un array de tags
+                $tags_id = $request->tags_id; //puede ser un array de tags
                 
-                $publication->save();
-
-                if(!is_null($tags_id)){
-
-                    foreach ($tags_id as $tag_id) {
-                        $tagRelationShip = new publications_tag;
-                        $tagRelationShip->publication_id = $publication->id;
-                        $tagRelationShip->tag_id = $tag_id;                        
-                        $tagRelationShip->save();                        
+                if(!is_null($tags_id) && $publication->save()){                    
+                    foreach ($tags_id as $tag_id) {                        
+                        $publication->tags()->attach($tag_id);                  
                     }
                 }
 
@@ -110,6 +104,7 @@ class PublicationController extends Controller
      */
     public function show(publication $publication)
     {
+        $publication->tags;
         return response()->json([
             'publication' => $publication,
         ]);

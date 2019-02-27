@@ -18,12 +18,12 @@ class CreatePublicationsTagsTable extends Migration
             $table->integer('publication_id')->unsigned();
             $table->integer('tag_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
 
-        Schema::table('publications_tags', function (Blueprint $table) {
-            $table->foreign('publication_id')->references('id')->on('publications');
-            $table->foreign('tag_id')->references('id')->on('tags');
-        });
+
     }
 
     /**

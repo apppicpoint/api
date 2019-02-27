@@ -18,12 +18,12 @@ class CreateSpotsTagsTable extends Migration
             $table->integer('spot_id')->unsigned();
             $table->integer('tag_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('spot_id')->references('id')->on('spots')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
 
-        Schema::table('spots_tags', function (Blueprint $table) {
-            $table->foreign('spot_id')->references('id')->on('spots');
-            $table->foreign('tag_id')->references('id')->on('tags');
-        });
+
     }
 
     /**

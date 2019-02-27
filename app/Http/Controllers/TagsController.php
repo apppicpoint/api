@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\tags;
+use App\tag;
 use Illuminate\Http\Request;
 use App\Validator;
 

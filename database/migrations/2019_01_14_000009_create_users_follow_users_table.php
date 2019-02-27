@@ -22,11 +22,7 @@ class CreateUsersFollowUsersTable extends Migration
             $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('leader_id')->references('id')->on('users')->onDelete('cascade');
         });
-/*
-        Schema::table('users_follow_users', function (Blueprint $table) {
-            $table->foreign('follower_user_id')->references('id')->on('users');
-            $table->foreign('followed_user_id')->references('id')->on('users');
-        }); */
+
     }
 
     /**
