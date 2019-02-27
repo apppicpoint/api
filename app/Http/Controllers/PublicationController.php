@@ -137,6 +137,23 @@ class PublicationController extends Controller
     {
         if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $publication->user_id || parent::getUserRol() == 1){
                         $publication->update($request->all());
+
+
+            $publicationTags = publications_tag::where('publication_id', $publication->id)->get();            
+            foreach ($publicationTags as $relationship) {
+                $relationship->delete();
+            }
+
+            if(!is_null($request->tag_id)){
+
+                    foreach ($request->tag_id as $tag_id) {
+                        $tagRelationShip = new publications_tag;
+                        $tagRelationShip->publication_id = $publication->id;
+                        $tagRelationShip->tag_id = $tag_id;                        
+                        $tagRelationShip->save();                        
+                    }
+                }
+
             return parent::response($publication->description, 200);
         } else {
             return parent::response('Access denied', 301);

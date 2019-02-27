@@ -11,7 +11,7 @@ class user extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
- 
+
     protected $dates = ['deleted_at'];
     /**
      * The attributes that are mass assignable.
@@ -70,8 +70,14 @@ class user extends Authenticatable
         return $this->belongsToMany('App\spot');
     }
 
-    public function users()
+    public function followers()
     {
-        return $this->belongsToMany('App\user');
+        return $this->belongsToMany(User::class, 'users_follow_users', 'leader_id', 'follower_id')->withTimestamps();
+    }
+
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'users_follow_users', 'follower_id', 'leader_id')->withTimestamps();
     }
 }

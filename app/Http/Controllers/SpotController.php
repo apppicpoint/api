@@ -148,6 +148,23 @@ class SpotController extends Controller
     {
         if (parent::getUserRol() != 4 && parent::getUserFromToken()->id == $spot->user_id || parent::getUserRol() == 1){
             $spot->update($request->all());
+
+            $spotTags = spots_tag::where('spot_id', $spot->id)->get();            
+            foreach ($spotTags as $relationship) {
+                $relationship->delete();
+            }
+
+            if(!is_null($request->tag_id)){
+
+                    foreach ($request->tag_id as $tag_id) {
+                        $tagRelationShip = new spots_tag;
+                        $tagRelationShip->spot_id = $spot->id;
+                        $tagRelationShip->tag_id = $tag_id;
+                        
+                        $tagRelationShip->save();                        
+                    }
+                }
+
             return parent::response('Spot updated', 200);
         } else {
             return parent::response('Access denied', 301);
@@ -177,7 +194,6 @@ class SpotController extends Controller
             return parent::response('Spot deleted', 200);
         }
         else {
-
             return parent::response('Access denied', 301);
         }
     }

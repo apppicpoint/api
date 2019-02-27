@@ -30,6 +30,11 @@ class Controller extends BaseController
         return $decodedToken->role_id;    
     }
 
+    protected function getUserId(){
+        $decodedToken = self::decodeToken();
+        return $decodedToken->user_id;    
+    }
+
     protected function getUserFromToken()
     {
        

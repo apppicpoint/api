@@ -39,3 +39,12 @@ Route::post('spotHasTags', 'SpotsTagController@spotHasTags');
 Route::get('select', 'TagsController@selectTagByName');
 Route::apiResource('publications', 'PublicationController');
 Route::get('spotPublications', 'PublicationController@getSpotPublications');
+
+Route::post('follow', 'UsersFollowUserController@followUser');
+Route::post('unfollow', 'UsersFollowUserController@unfollowUser');
+Route::post('isFollowing', 'UsersFollowUserController@isUserFollowingUser');
+Route::post('followings', 'UsersFollowUserController@getLeaders');
+Route::post('followers', 'UsersFollowUserController@getFollowers');
+
+
+

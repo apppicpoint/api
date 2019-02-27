@@ -93,7 +93,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {   
-        if(parent::getUserRol() != 4) {       
+        
+        if(parent::getUserRol() == 1 or (parent::getUserRol() != 4 and parent::getUserId() == $request['user_id'])) {       
 
         
             if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
@@ -132,12 +133,13 @@ class UserController extends Controller
                 $user->name = $request['name'];
             }
             
-            if ($request['role_id'] < 1 or $request['role_id'] > 3 and !is_null($request['role_id'])) {
+            if ($request['role_id'] < 1 or $request['role_id'] > 3 and !is_null($request['role_id'])) {               
                 return parent::response('This is not a correct user status', 400);
-            } else if (!is_null($request['role_id'])){
+            } else if (!is_null($request['role_id'])) {
                 $user->role_id = $request['role_id'];
             }
             
+
             $user->biography = $request['biography'];
             $user->photo = $request['photo'];
             $user->telephone = $request['telephone'];
@@ -154,6 +156,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        
          if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
             $user->delete();
             return parent::response("User deleted", 200);
@@ -335,6 +338,7 @@ class UserController extends Controller
             'name' => $user->name,
             'nickName' => $user->nickName,
             'role_id' => $user->role_id,
+            'user_id' => $user->id,
             'random' => time()
         ];
 
