@@ -25,7 +25,7 @@ class UsersFollowUserController extends Controller
     public function followUser(Request $request)
     {
         $leader_id = $request['leader_id'];
-        $follower_id = $request['follower_id'];
+        $follower_id = isset($request['follower_id']) ? $request['follower_id'] : parent::getUserId();
 
         $leaderUser = User::find($leader_id);
         $followerUser = User::find($follower_id);
@@ -61,7 +61,7 @@ class UsersFollowUserController extends Controller
     public function unFollowUser(Request $request)
     {
       $leader_id = $request['leader_id'];
-        $follower_id = $request['follower_id'];
+        $follower_id = isset($request['follower_id']) ? $request['follower_id'] : parent::getUserId();
 
         $leaderUser = User::find($leader_id);
         $followerUser = User::find($follower_id);
@@ -108,7 +108,7 @@ class UsersFollowUserController extends Controller
     
     public function isUserFollowingUser(Request $request) {
         $leader_id = $request['leader_id'];
-        $follower_id = $request['follower_id'];
+        $follower_id = isset($request['follower_id']) ? $request['follower_id'] : parent::getUserId();
         $users_follow_user = users_follow_user::where('leader_id', $leader_id)
         ->where('follower_id', $follower_id)->exists();
 
@@ -119,8 +119,8 @@ class UsersFollowUserController extends Controller
 
     public function getFollowers(Request $request) {
 
-        $userId = $request['user_id']; 
-        $user = User::find($userId);
+        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
+        $user = User::find($user_id);
         $followers = $user->followers;
         
         if (count($followers) <= 0) {
@@ -134,7 +134,7 @@ class UsersFollowUserController extends Controller
     }
 
     public function getLeaders(Request $request) {
-        $userId = $request['user_id']; 
+        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
         $user = User::find($userId);        
         $leaders = $user->followings;
         if (count($leaders) <= 0) {

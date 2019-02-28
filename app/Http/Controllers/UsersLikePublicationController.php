@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\users_like_publication;
 use Illuminate\Http\Request;
+use App\User;
+use App\publication;
 
 class UsersLikePublicationController extends Controller
 {
@@ -14,72 +16,63 @@ class UsersLikePublicationController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'publications_tag' => publications_tag::all(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+   public function likePublication(Request $request)
     {
-        //
+
+        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
+        $publication_id = $request['publication_id'];
+
+        $user = User::find($user_id);
+        $publication = publication::find($publication_id);
+
+        if(is_null($user_id) || is_null($publication_id)){
+            return parent::response("Something is null",400);
+        }
+
+        if(!$user){
+            return parent::response("That users doesn't exist", 400);
+        }
+        
+        if(!$publication){
+            return parent::response("That publication  doesn't exist", 400);
+        }
+        
+        //Ya le han dado like. 
+        if (users_like_publication::where('user_id', $user_id)
+        ->where('publication_id', $publication_id)->exists()) {   
+
+            $publication->usersLiked()->detach($user);
+            return parent::response("Publication disliked", 200);
+        } else {
+
+            $publication->usersLiked()->attach($user);
+            return parent::response("Publication liked", 200);
+
+        }                
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function isPublicationLikedByUser(Request $request) {
+        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
+        $publication_id = $request['publication_id'];
+        $users_like_publication = users_like_publication::where('user_id', $user_id)
+        ->where('publication_id', $publication_id)->exists();
+
+        return response()->json([
+            'is_liked' => $users_like_publication,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\users_like_publication  $users_like_publication
-     * @return \Illuminate\Http\Response
-     */
-    public function show(users_like_publication $users_like_publication)
-    {
-        //
+    public function getLikesCount($publication_id) {
+        $users_like_publication = users_like_publication::where('publication_id', $publication_id)->get();
+
+        return response()->json([
+            'likes' => $users_like_publication->count(),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\users_like_publication  $users_like_publication
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(users_like_publication $users_like_publication)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\users_like_publication  $users_like_publication
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, users_like_publication $users_like_publication)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\users_like_publication  $users_like_publication
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(users_like_publication $users_like_publication)
-    {
-        //
-    }
 }

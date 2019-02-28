@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Validator;
 use App\publications_tag;
 use App\tags;
+use App\spot;
+use App\User;
 
 class PublicationController extends Controller
 {
@@ -38,27 +40,15 @@ class PublicationController extends Controller
     }
 
 
-    public function getSpotPublications(){
-
-        $headers = getallheaders();
-        if (isset($headers['spot_id'])) {
-            return response()->json([
-                'publications' => publication::where('spot_id', '=', $headers['spot_id'])->get(),
+    public function getSpotPublications($spot_id){
+        
+        return response()->json([
+                'publications' => spot::find($spot_id)->publications,
             ]);
-        }
-        return parent::response("select a spot_id", 400);
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -113,16 +103,7 @@ class PublicationController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\publication  $publication
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(publication $publication)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -180,5 +161,11 @@ class PublicationController extends Controller
         else {
             return parent::response('Access denied', 301);
         }
+    }
+
+    public function getUserPublications($user_id) {
+        return response()->json([
+                'publications' => User::find($user_id)->publications,
+            ]);
     }
 }

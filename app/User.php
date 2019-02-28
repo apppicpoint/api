@@ -80,4 +80,9 @@ class user extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'users_follow_users', 'follower_id', 'leader_id')->withTimestamps();
     }
+
+    public function publicationsLiked()
+    {
+        return $this->belongsToMany(publication::class, 'users_like_publications', 'publication_id', 'user_id')->withTimestamps();
+    }
 }

@@ -29,4 +29,10 @@ class publication extends Model
     {
         return $this->belongsToMany('App\User');
     }
+
+    public function usersLiked()
+    {
+        return $this->belongsToMany(User::class, 'users_like_publications', 'publication_id', 'user_id')->withTimestamps();
+    }
+
 }
