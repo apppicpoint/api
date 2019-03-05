@@ -79,7 +79,7 @@ class PublicationController extends Controller
                 }
                 $publication->user_id = parent::getUserFromToken()->id;
                 $tags_id = $request->tags_id; //puede ser un array de tags
-                $publication->save()
+                $publication->save();
                 
                 if(!is_null($tags_id)){                    
                     foreach ($tags_id as $tag_id) {                        
