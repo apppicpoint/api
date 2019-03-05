@@ -53,14 +53,16 @@ Route::get('userPublications/{user_id}', 'PublicationController@getUserPublicati
 // Sistema de seguidores
 Route::post('follow', 'UsersFollowUserController@followUser');
 Route::post('unfollow', 'UsersFollowUserController@unfollowUser');
-Route::post('isFollowing', 'UsersFollowUserController@isUserFollowingUser');
-Route::post('followings', 'UsersFollowUserController@getLeaders');
-Route::post('followers', 'UsersFollowUserController@getFollowers');
+Route::get('isFollowing/{leader_id}/{follower_id?}', 'UsersFollowUserController@isUserFollowingUser');
+Route::get('followings/{user_id?}', 'UsersFollowUserController@getLeaders');
+Route::get('followers/{user_id?}', 'UsersFollowUserController@getFollowers');
 
 // Sistema de likes
 Route::post('like', 'UsersLikePublicationController@likePublication');
-Route::post('isLiked', 'UsersLikePublicationController@isPublicationLikedByUser');
+Route::get('isLiked/{publication_id}/{user_id?}', 'UsersLikePublicationController@isPublicationLikedByUser');
 Route::get('likesCount/{publication_id}', 'UsersLikePublicationController@getLikesCount');
+
+// Sistema de comentarios
 
 
 

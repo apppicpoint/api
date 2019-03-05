@@ -106,9 +106,9 @@ class UsersFollowUserController extends Controller
     }
 
     
-    public function isUserFollowingUser(Request $request) {
-        $leader_id = $request['leader_id'];
-        $follower_id = isset($request['follower_id']) ? $request['follower_id'] : parent::getUserId();
+    public function isUserFollowingUser($leader_id, $follower_id = null) {
+        //$leader_id = $request['leader_id'];
+        $follower_id = isset($follower_id) ? $follower_id : parent::getUserId();
         $users_follow_user = users_follow_user::where('leader_id', $leader_id)
         ->where('follower_id', $follower_id)->exists();
 
@@ -117,31 +117,35 @@ class UsersFollowUserController extends Controller
         ]);
     }
 
-    public function getFollowers(Request $request) {
+    public function getFollowers($user_id = null) {
 
-        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
+        $user_id = isset($user_id) ? $user_id : parent::getUserId();
         $user = User::find($user_id);
         $followers = $user->followers;
         
+        /*
         if (count($followers) <= 0) {
-            parent::response("Nobody follows you", 200);
-        }
+            return parent::response("Nobody follows you", 200);
+        }*/
 
         return response()->json([
             'followers' => $followers,
+            'count' => count($followers)
         ]);
         
     }
 
-    public function getLeaders(Request $request) {
-        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
-        $user = User::find($userId);        
+    public function getLeaders($user_id = null) {
+        $user_id = isset($user_id) ? $user_id : parent::getUserId();
+        $user = User::find($user_id);        
         $leaders = $user->followings;
+        /*
         if (count($leaders) <= 0) {
             return parent::response("You don't have friends",200);
-        }
+        } */
         return response()->json([
             'leaders' => $leaders,
+            'count' => count($leaders)
         ]);
     }
 

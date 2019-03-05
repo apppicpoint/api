@@ -56,9 +56,8 @@ class UsersLikePublicationController extends Controller
         }                
     }
 
-    public function isPublicationLikedByUser(Request $request) {
-        $user_id = isset($request['user_id']) ? $request['user_id'] : parent::getUserId();
-        $publication_id = $request['publication_id'];
+    public function isPublicationLikedByUser($publication_id, $user_id = null) {
+        $user_id = isset($user_id) ? $user_id : parent::getUserId();
         $users_like_publication = users_like_publication::where('user_id', $user_id)
         ->where('publication_id', $publication_id)->exists();
 
