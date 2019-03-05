@@ -42,8 +42,13 @@ class PublicationController extends Controller
 
     public function getSpotPublications($spot_id){
         
+        $publications = spot::find($spot_id)->publications;
+        foreach ($publications as $publication) {                        
+            $publication->tags;
+        }
+
         return response()->json([
-                'publications' => spot::find($spot_id)->publications,
+                'publications' => $publications,
             ]);
         
     }
@@ -74,8 +79,9 @@ class PublicationController extends Controller
                 }
                 $publication->user_id = parent::getUserFromToken()->id;
                 $tags_id = $request->tags_id; //puede ser un array de tags
+                $publication->save()
                 
-                if(!is_null($tags_id) && $publication->save()){                    
+                if(!is_null($tags_id)){                    
                     foreach ($tags_id as $tag_id) {                        
                         $publication->tags()->attach($tag_id);                  
                     }
