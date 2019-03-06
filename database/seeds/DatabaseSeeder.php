@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'david.tejedor@outlook.com',
             'password' => Hash::make("davidadmin"),
             'role_id' => 1,
+            'photo' => 'sol',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -50,6 +51,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'apppicpoint@gmail.com',
             'password' => Hash::make("PicPoint2019"),
             'role_id' => 1,
+            'photo' => 'sol',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -59,6 +61,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'carlosfdez201297@gmail.com',
             'password' => Hash::make("daxter9397"),
             'role_id' => 1,
+            'photo' => 'sol',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -68,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'sofiasantosmelian@gmail.com',
             'password' => Hash::make("tictoctictoc"),
             'role_id' => 1,
+            'photo' => 'sol',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -77,6 +81,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'joaquincollazoruiz@gmail.com',
             'password' => Hash::make("joaqin99"),
             'role_id' => 1,
+            'photo' => 'sol',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -397,6 +402,23 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
             ]);
+
+            DB::table('comments')->insert([
+            'text' => 'Comentario de David',
+            'user_id' => '1',
+            'spot_id' => '1',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+            ]);
+
+            DB::table('comments')->insert([
+            'text' => 'Comentario de Carlos',
+            'user_id' => '3',
+            'spot_id' => '1',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+            ]);
+
 
 
     }
