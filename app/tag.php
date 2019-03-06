@@ -14,11 +14,11 @@ class tag extends Model
 
     public function publications()
     {
-        return $this->belongsToMany(spot::class, 'publications_tags', 'publication_id', 'tag_id')->withTimestamps();
+        return $this->belongsToMany(publication::class, 'publications_tags', 'tag_id', 'publication_id')->withTimestamps();
     }
 
     public function spots()
     {
-        return $this->belongsToMany(spot::class, 'spots_tags', 'spot_id', 'tag_id')->withTimestamps();
+        return $this->belongsToMany(spot::class, 'spots_tags', 'tag_id', 'spot_id')->withTimestamps();
     }
 }

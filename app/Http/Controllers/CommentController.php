@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\comment;
 use Illuminate\Http\Request;
+use App\spot;
+use App\Validator;
+
+
 
 class CommentController extends Controller
 {
@@ -13,8 +17,17 @@ class CommentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {   $headers = getallheaders();
+
+        if (isset($headers['spot_id'])) {
+            return response()->json([
+            'comments' => Spot::find($headers['spot_id'])->comments,
+            ]);
+        }
+        
+        return response()->json([
+            'comments' => comment::all(),
+            ]);
     }
 
     /**
@@ -35,7 +48,23 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (parent::getUserRol() != 4) {
+            if (Validator::isStringEmpty($request->text)) 
+            {
+                return parent::response('Dont leave blank fields', 400);
+            } else {
+                $comment = new comment;
+                $comment->text = $request->text;                
+                $comment->spot_id = $request->spot_id;                  
+                $comment->user_id = parent::getUserFromToken()->id;                
+                $comment->save();
+                
+                return parent::response('Comment created', 200);
+            }
+            
+        } else {
+            return parent::response('Access denied', 301);
+        }
     }
 
     /**

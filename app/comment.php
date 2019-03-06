@@ -15,11 +15,6 @@ class comment extends Model
         return $this->belongsTo('App\spot');
     }
 
-    public function comment()
-    {
-        return $this->belongsTo('App\comment');
-    }
-
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -29,4 +24,6 @@ class comment extends Model
     {
         return $this->hasMany('App\comment');
     }
+
+    
 }

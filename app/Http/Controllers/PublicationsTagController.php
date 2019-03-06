@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\publications_tag;
 use Illuminate\Http\Request;
+use App\tag;
+
 
 class PublicationsTagController extends Controller
 {
@@ -21,16 +23,7 @@ class PublicationsTagController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -65,27 +58,7 @@ class PublicationsTagController extends Controller
         return parent::response("Relatioship created", 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\publications_tag  $publications_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function show(publications_tag $publications_tag)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\publications_tag  $publications_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(publications_tag $publications_tag)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -115,14 +88,9 @@ class PublicationsTagController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\publications_tag  $publications_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(publications_tag $publications_tag)
-    {
-        //
+    public function getPublicationsByTag($tag_id){
+        return response()->json([
+            'pblications' => tag::find($tag_id)->publications,
+        ]);
     }
 }

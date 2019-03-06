@@ -66,6 +66,15 @@ class UsersLikePublicationController extends Controller
         ]);
     }
 
+    public function getLikedPublications($user_id = null) {
+        $user_id = isset($user_id) ? $user_id : parent::getUserId();
+        $user = User::find($user_id);
+        $publications = $user->publicationsLiked;
+
+        return response()->json([
+            'publications' => $publications,
+        ]);
+    }
     public function getLikesCount($publication_id) {
         $users_like_publication = users_like_publication::where('publication_id', $publication_id)->get();
 

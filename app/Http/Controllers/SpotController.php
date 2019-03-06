@@ -88,9 +88,9 @@ class SpotController extends Controller
                 $spot->image = $request->image;  
                 $spot->user_id = parent::getUserFromToken()->id;
                 $tags_id = $request->tags_id; //puede ser un array de tags              
-                
+                $spot->save()
 
-                if(!is_null($tags_id) && $spot->save()){                    
+                if(!is_null($tags_id)){                    
                     foreach ($tags_id as $tag_id) {                        
                         $spot->tags()->attach($tag_id);                  
                     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\spots_tag;
 use Illuminate\Http\Request;
 use App\spot;
-use App\tags;
+use App\tag;
 
 class SpotsTagController extends Controller
 {
@@ -21,15 +21,6 @@ class SpotsTagController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -78,57 +69,15 @@ class SpotsTagController extends Controller
 
 //Este método devuelve un array de los tags de un spot
     public function spotHasTags(Request $request)
-    {
-        $spot_id = $request->spot_id;
-        $spot_tags = spots_tag::where('spot_id','=', $spot_id)->get();
-
-        $tags = [];
-        for ($i=0; $i < count($spot_tags); $i++) 
-        { 
-            array_push($tags, $spot_tags[$i]["tag_id"]);
-        }
-
-        $arrayTags = [];
-        for ($i=0; $i < count($tags); $i++) { 
-            array_push($arrayTags , tags::where('id', $tags[$i])->first());
-        }
-
+    {   
         return response()->json([
-            'tags' => $arrayTags
+            'tags' => spot::find($request['spot_id'])->tags,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\spots_tag  $spots_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(spots_tag $spots_tag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\spots_tag  $spots_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, spots_tag $spots_tag)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\spots_tag  $spots_tag
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(spots_tag $spots_tag)
-    {
-        //
+    public function getSpotsByTag($tag_id){
+        return response()->json([
+            'spots' => tag::find($tag_id)->spots,
+        ]);
     }
 }
