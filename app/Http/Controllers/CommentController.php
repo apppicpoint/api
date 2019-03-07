@@ -109,6 +109,7 @@ class CommentController extends Controller
      */
     public function destroy(comment $comment)
     {
-        //
+        $comment->delete();
+        return parent::response('Comment deleted', 200);
     }
 }

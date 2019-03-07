@@ -74,7 +74,7 @@ class PublicationController extends Controller
                 if(isset($request->description)) {
                     $publication->description = $request->description;
                 }
-                if(isset($request->spot_id)) {
+                if(isset($request->spot_id) and is_int($request->spot_id)) {
                     $publication->spot_id = $request->spot_id;
                 }
                 $publication->user_id = parent::getUserFromToken()->id;

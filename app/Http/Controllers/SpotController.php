@@ -248,4 +248,10 @@ class SpotController extends Controller
         }
     }
 
+    public function getUserSpots($user_id) {
+        return response()->json([
+                'spots' => User::find($user_id)->spots,
+            ]);
+    }
+
 }

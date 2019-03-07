@@ -37,6 +37,8 @@ Route::get('imgLow/{filename}','ImageController@getLowImage');
 Route::apiResource('spots','SpotController')->middleware('check.token');
 Route::post('distance', 'SpotController@distance');
 Route::post('checkSpotNear', 'SpotController@checkSpotNear');
+Route::get('userSpots/{user_id}', 'SpotController@getUserSpots');
+
 
 // Tags
 Route::apiResource('tag', 'TagsController');
