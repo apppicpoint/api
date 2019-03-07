@@ -81,7 +81,7 @@ class PublicationController extends Controller
                 $tags_id = $request->tags_id; //puede ser un array de tags
                 $publication->save();
                 
-                if(!is_null($tags_id)){                    
+                if(!is_null($tags_id)){                     
                     foreach ($tags_id as $tag_id) {                        
                         $publication->tags()->attach($tag_id);                  
                     }
