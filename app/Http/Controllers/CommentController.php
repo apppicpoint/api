@@ -20,11 +20,23 @@ class CommentController extends Controller
     {   $headers = getallheaders();
 
         if (isset($headers['spot_id'])) {
+
+            $comments = Spot::find($headers['spot_id'])->comments;
+            
+            foreach ($comments as $comment) {
+                $comment->user;
+            }
             return response()->json([
-            'comments' => Spot::find($headers['spot_id'])->comments,
+            'comments' => $comments,
             ]);
         }
         
+        $comments = comment::all();
+            
+        foreach ($comments as $comment) {
+            $comment->user;
+        }
+            
         return response()->json([
             'comments' => comment::all(),
             ]);
