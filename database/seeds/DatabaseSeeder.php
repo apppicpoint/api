@@ -90,6 +90,7 @@ class DatabaseSeeder extends Seeder
             'nickname' => 'oliverpk',
             'email' => 'oliverikx@hotmail.com',
             'password' => Hash::make("0l1x1234"),
+            'photo' => 'sol',
             'role_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
