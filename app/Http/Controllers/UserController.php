@@ -61,11 +61,11 @@ class UserController extends Controller
      */
     public function show(user $user)
     {
-        if (parent::getUserRol() != 4) {
-            return response()->json([
-                'user' => $user,
+        
+        return response()->json([
+            'user' => $user,
         ]);
-        }
+        
         
     }
 
@@ -96,7 +96,7 @@ class UserController extends Controller
         
         if(parent::getUserRol() == 1 or (parent::getUserRol() != 4 and parent::getUserId() == $request['user_id'])) {       
 
-        
+            
             if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
                 return parent::response('Use a valid email.', 400);
             }
@@ -157,13 +157,13 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         
-         if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
-            $user->delete();
-            return parent::response("User deleted", 200);
-        }
+       if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
+        $user->delete();
+        return parent::response("User deleted", 200);
     }
+}
 
-    
+
 
     /**
      * Valida las credenciales del usuario y devuelve un token 
@@ -182,38 +182,38 @@ class UserController extends Controller
         }
 
         if (!Validator::isEmailInUse($email)) {
-           return(parent::response("User doesn't exist",400));
-        }
+         return(parent::response("User doesn't exist",400));
+     }
 
-        $user = parent::findUser($email);
+     $user = parent::findUser($email);
 
-         if (password_verify($password, $user->password) and $user->email == $email) 
+     if (password_verify($password, $user->password) and $user->email == $email) 
         {   if ($user->banned) {
-                return parent::response('You have been banned', 301);
-            }
-            else {
-                $token = self::generateToken($user);
+            return parent::response('You have been banned', 301);
+        }
+        else {
+            $token = self::generateToken($user);
             return response()->json ([
                 'token' => $token,
                 'role_id' => $user->role_id,
                 'user_id' => $user->id
             ]);
-            }
         }
-            
-        
-        else 
-        {            
-            return parent::response('Invalid inputs', 400);
-        }
-
-
+    }
+    
+    
+    else 
+    {            
+        return parent::response('Invalid inputs', 400);
     }
 
-    
 
-    const STANDARD_ROLE_ID = 3; 
-    const GUEST_ROLE_ID = 4;
+}
+
+
+
+const STANDARD_ROLE_ID = 3; 
+const GUEST_ROLE_ID = 4;
 
     /**
      * Valida todos los campos, registra al usuario en la base de datos y devuelve un token 
@@ -272,11 +272,11 @@ class UserController extends Controller
         $user->save();
         
         $token = self::generateToken($user);
-            return response()->json ([
-                'token' => $token,
-                'role_id' => $user->role_id,
-                'user_id' => $user->id
-            ]);
+        return response()->json ([
+            'token' => $token,
+            'role_id' => $user->role_id,
+            'user_id' => $user->id
+        ]);
     }
 
     /**
@@ -290,40 +290,40 @@ class UserController extends Controller
 
     public function forgotPassword(Request $request){
 
-         if (Validator::isEmailInUse($request->email)){
+       if (Validator::isEmailInUse($request->email)){
 
-            try {
+        try {
 
-                $user = parent::findUser($request->email);
-                $newPassword = parent::randomString(8);
-                $to_name = $user->name;
-                $to_email = $user->email;
+            $user = parent::findUser($request->email);
+            $newPassword = parent::randomString(8);
+            $to_name = $user->name;
+            $to_email = $user->email;
 
-                $user->update([
-                    'password' => Hash::make($newPassword),
-                ]);
+            $user->update([
+                'password' => Hash::make($newPassword),
+            ]);
 
-                $data = array('name'=>$user->name, "password" => $newPassword );
-                    
-                Mail::send('emails.forgot', $data, function($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)
-                            ->subject('Picpoint | Forgot password');
-                    $message->from('apppicpoint@gmail.com','Picpoint');
-                });
+            $data = array('name'=>$user->name, "password" => $newPassword );
+            
+            Mail::send('emails.forgot', $data, function($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)
+                ->subject('Picpoint | Forgot password');
+                $message->from('apppicpoint@gmail.com','Picpoint');
+            });
 
-                return parent::response('New password sent', 200);
-                
-            } catch (Exception $e) {
+            return parent::response('New password sent', 200);
+            
+        } catch (Exception $e) {
 
-                return parent::response('Error in the request', 400);
-            }      
-         }
-         else {
-
-            return parent::response('This email is not registered', 400);
-         }
+            return parent::response('Error in the request', 400);
+        }      
     }
-    
+    else {
+
+        return parent::response('This email is not registered', 400);
+    }
+}
+
     /**
      * Genera un token a partir de los daros del usuario.
      *
@@ -371,13 +371,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */    
-    public function getUserRol(){
-        $role = parent::getUserRol();
-        return response()->json ([
-                'role' => $role
-            ]);
-    }
-    
+public function getUserRol(){
+    $role = parent::getUserRol();
+    return response()->json ([
+        'role' => $role
+    ]);
+}
+
     /**
      * Alterna el estado del usuario entre bloqueado y desbloqueado.
      *
