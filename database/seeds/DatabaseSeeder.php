@@ -121,6 +121,18 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now(),
         ]);
          DB::table('spots')->insert([
+            'name' => 'CEV',
+            'description' => 'Centro de estudios del video',
+            'latitude' => 40.43712,
+            'longitude' => -3.715398,
+            'city' => 'Madrid',
+            'country' => 'Spain',
+            'image' => 'cev',
+            'user_id' => 2,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+         DB::table('spots')->insert([
             'name' => 'Bernabeu',
             'description' => 'Mejor estadio del mundo',
             'latitude' => 40.453127,
