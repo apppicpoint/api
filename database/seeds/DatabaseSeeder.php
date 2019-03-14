@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("davidadmin"),
             'role_id' => 1,
             'photo' => 'david',
+            'biography' => 'Fotógrafo amateur amante de la naturaleza.',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -52,6 +53,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("PicPoint2019"),
             'role_id' => 1,
             'photo' => 'logo',
+            'biography' => 'Equipo de desarrollo de Picpoint',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -62,6 +64,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("daxter9397"),
             'role_id' => 1,
             'photo' => 'carlos',
+            'biography' => 'Fotógrafo amateur amante de la naturaleza.',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -72,6 +75,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("tictoctictoc"),
             'role_id' => 1,
             'photo' => 'sofia',
+            'biography' => 'Fotógrafa amateur amante de la naturaleza.',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -82,6 +86,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make("joaqin99"),
             'role_id' => 1,
             'photo' => 'joaquin',
+            'biography' => 'Fotógrafo amateur amante de la naturaleza.',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -91,6 +96,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'oliverikx@hotmail.com',
             'password' => Hash::make("0l1x1234"),
             'photo' => 'oliver',
+            'biography' => 'Fotógrafo amateur amante de la naturaleza.',
             'role_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
