@@ -75,7 +75,7 @@ class UsersLikePublicationController extends Controller
             'publications' => $publications,
         ]);
     }
-    public function getLikesCount($publication_id) {
+    public function likesCountPublication($publication_id) {
         $users_like_publication = users_like_publication::where('publication_id', $publication_id)->get();
 
         return response()->json([
@@ -83,4 +83,13 @@ class UsersLikePublicationController extends Controller
         ]);
     }
 
+/*
+    public function getTotalLikesCount($user_id) {
+        $publicationsLiked = Publication::where('user_id', $user_id)->get();
+
+        return response()->json([
+            'likes' => $users_like_publication->count(),
+        ]);
+    }
+*/
 }

@@ -60,12 +60,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(user $user)
-    {
-        
+    {        
         return response()->json([
             'user' => $user,
-        ]);
-        
+        ]);        
         
     }
 
@@ -93,10 +91,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {   
-        
+
         if(parent::getUserRol() == 1 or (parent::getUserRol() != 4 and parent::getUserId() == $request['user_id'])) {       
 
-            
+
             if (!Validator::isValidEmail($request['email']) && !is_null($request['email'])) {
                 return parent::response('Use a valid email.', 400);
             }
@@ -156,7 +154,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        
+
        if (parent::checkLogin() && parent::getUserFromToken()->id == $user->user_id || parent::getUserRol() == 1){
         $user->delete();
         return parent::response("User deleted", 200);
@@ -200,8 +198,8 @@ class UserController extends Controller
             ]);
         }
     }
-    
-    
+
+
     else 
     {            
         return parent::response('Invalid inputs', 400);
@@ -304,7 +302,7 @@ const GUEST_ROLE_ID = 4;
             ]);
 
             $data = array('name'=>$user->name, "password" => $newPassword );
-            
+
             Mail::send('emails.forgot', $data, function($message) use ($to_name, $to_email) {
                 $message->to($to_email, $to_name)
                 ->subject('Picpoint | Forgot password');
@@ -312,7 +310,7 @@ const GUEST_ROLE_ID = 4;
             });
 
             return parent::response('New password sent', 200);
-            
+
         } catch (Exception $e) {
 
             return parent::response('Error in the request', 400);

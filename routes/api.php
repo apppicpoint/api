@@ -67,8 +67,10 @@ Route::get('followingsCount/{follower_id?}', 'UsersFollowUserController@getFollo
 // Sistema de likes
 Route::post('like', 'UsersLikePublicationController@likePublication');
 Route::get('isLiked/{publication_id}/{user_id?}', 'UsersLikePublicationController@isPublicationLikedByUser');
-Route::get('likesCount/{publication_id}', 'UsersLikePublicationController@getLikesCount');
+Route::get('likesCountPublication/{publication_id}', 'UsersLikePublicationController@likesCountPublication');
 Route::get('getLikedPublications/{user_id?}', 'UsersLikePublicationController@getLikedPublications');
+Route::get('getTotalLikesCount/{user_id}', 'UsersLikePublicationController@getTotalLikesCount');
+
 
 // Sistema de comentarios
 Route::apiResource('comments','CommentController')->middleware('check.token');
